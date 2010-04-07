@@ -2,7 +2,7 @@
 
 IMPLEMENTS: QuasiLocalMeasures
 
-INHERITS: ADMBase SphericalSurface
+INHERITS: ADMBase SphericalSurface TmunuBase
 
 
 
@@ -86,24 +86,6 @@ COMPLEX qlm_tetrad_m[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::maxnt
   qlm_m0 qlm_m1 qlm_m2 qlm_m3       # null normal within surface
 } "Tetrad vector m^mu"
 
-REAL qlm_tetrad_l_p[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::maxntheta,SphericalSurface::maxnphi DISTRIB=constant TAGS='convergence_power=1'
-{
-  qlm_l0_p qlm_l1_p qlm_l2_p qlm_l3_p
-  qlm_l0_p_p qlm_l1_p_p qlm_l2_p_p qlm_l3_p_p
-} "Previous tetrad vectors l^mu"
-
-REAL qlm_tetrad_n_p[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::maxntheta,SphericalSurface::maxnphi DISTRIB=constant TAGS='convergence_power=1'
-{
-  qlm_n0_p qlm_n1_p qlm_n2_p qlm_n3_p
-  qlm_n0_p_p qlm_n1_p_p qlm_n2_p_p qlm_n3_p_p
-} "Previous tetrad vectors n^mu"
-
-COMPLEX qlm_tetrad_m_p[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::maxntheta,SphericalSurface::maxnphi DISTRIB=constant TAGS='convergence_power=1'
-{
-  qlm_m0_p qlm_m1_p qlm_m2_p qlm_m3_p
-  qlm_m0_p_p qlm_m1_p_p qlm_m2_p_p qlm_m3_p_p
-} "Previous tetrad vectors m^mu"
-
 COMPLEX qlm_newman_penrose[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::maxntheta,SphericalSurface::maxnphi DISTRIB=constant TAGS='Checkpoint="no"' TAGS='convergence_power=1'
 {
   qlm_npkappa qlm_nptau qlm_npsigma qlm_nprho
@@ -155,12 +137,6 @@ REAL qlm_killing_vector[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::ma
   qlm_xi_t qlm_xi_p
   qlm_chi
 } "Killing vector field"
-
-REAL qlm_killing_vector_p[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::maxntheta,SphericalSurface::maxnphi DISTRIB=constant TAGS='convergence_power=1'
-{
-  qlm_xi_t_p qlm_xi_p_p
-  qlm_xi_t_p_p qlm_xi_p_p_p
-} "Previous Killing vector field"
 
 REAL qlm_killed_twometric[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::maxntheta,SphericalSurface::maxnphi DISTRIB=constant TAGS='Checkpoint="no"' TAGS='convergence_power=1'
 {

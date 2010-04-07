@@ -21,7 +21,10 @@ module qlm_variables
              qlm_dkxxy, qlm_dkxyy, qlm_dkxzy, qlm_dkyyy, qlm_dkyzy, qlm_dkzzy, &
              qlm_dkxxz, qlm_dkxyz, qlm_dkxzz, qlm_dkyyz, qlm_dkyzz, qlm_dkzzz, &
              qlm_alpha, &
-             qlm_betax, qlm_betay, qlm_betaz
+             qlm_betax, qlm_betay, qlm_betaz, &
+             qlm_ttt, &
+             qlm_ttx, qlm_tty, qlm_ttz, &
+             qlm_txx, qlm_txy, qlm_txz, qlm_tyy, qlm_tyz, qlm_tzz
   
   type tetrad_derivs
      ! nabla_ll(a,b) = D_b l_a
@@ -34,8 +37,11 @@ module qlm_variables
 contains
   
   subroutine allocate_variables(ntheta, nphi)
-    integer, intent(in) :: ntheta, nphi
-
+    integer,   intent(in) :: ntheta, nphi
+    CCTK_REAL, parameter  :: zero = 0
+    integer,   parameter  :: rk = kind(zero)
+    type(tetrad_derivs)   :: tetrad_derivs_nan
+    
     allocate(qlm_gxx(ntheta,nphi))
     allocate(qlm_gxy(ntheta,nphi))
     allocate(qlm_gxz(ntheta,nphi))
@@ -124,6 +130,16 @@ contains
     allocate(qlm_betax(ntheta,nphi))
     allocate(qlm_betay(ntheta,nphi))
     allocate(qlm_betaz(ntheta,nphi))
+    allocate(qlm_ttt(ntheta,nphi))
+    allocate(qlm_ttx(ntheta,nphi))
+    allocate(qlm_tty(ntheta,nphi))
+    allocate(qlm_ttz(ntheta,nphi))
+    allocate(qlm_txx(ntheta,nphi))
+    allocate(qlm_txy(ntheta,nphi))
+    allocate(qlm_txz(ntheta,nphi))
+    allocate(qlm_tyy(ntheta,nphi))
+    allocate(qlm_tyz(ntheta,nphi))
+    allocate(qlm_tzz(ntheta,nphi))
     
     allocate(qlm_tetrad_derivs(ntheta,nphi))
     
@@ -215,6 +231,21 @@ contains
     qlm_betax = TAT_nan()
     qlm_betay = TAT_nan()
     qlm_betaz = TAT_nan()
+    qlm_ttt = TAT_nan()
+    qlm_ttx = TAT_nan()
+    qlm_tty = TAT_nan()
+    qlm_ttz = TAT_nan()
+    qlm_txx = TAT_nan()
+    qlm_txy = TAT_nan()
+    qlm_txz = TAT_nan()
+    qlm_tyy = TAT_nan()
+    qlm_tyz = TAT_nan()
+    qlm_tzz = TAT_nan()
+    
+    tetrad_derivs_nan%nabla_ll = TAT_nan()
+    tetrad_derivs_nan%nabla_nn = TAT_nan()
+    tetrad_derivs_nan%nabla_mm = cmplx(TAT_nan(),TAT_nan(),rk)
+    qlm_tetrad_derivs = tetrad_derivs_nan
   end subroutine allocate_variables
 
   subroutine deallocate_variables
@@ -306,6 +337,16 @@ contains
     deallocate(qlm_betax)
     deallocate(qlm_betay)
     deallocate(qlm_betaz)
+    deallocate(qlm_ttt)
+    deallocate(qlm_ttx)
+    deallocate(qlm_tty)
+    deallocate(qlm_ttz)
+    deallocate(qlm_txx)
+    deallocate(qlm_txy)
+    deallocate(qlm_txz)
+    deallocate(qlm_tyy)
+    deallocate(qlm_tyz)
+    deallocate(qlm_tzz)
     
     deallocate(qlm_tetrad_derivs)
   end subroutine deallocate_variables

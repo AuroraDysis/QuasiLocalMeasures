@@ -57,38 +57,6 @@ subroutine qlm_import_surface (CCTK_ARGUMENTS, hn)
      
      qlm_shape_p_p(:,:,hn) = qlm_shape_p(:,:,hn)
      qlm_shape_p  (:,:,hn) = qlm_shape  (:,:,hn)
-       
-     qlm_l0_p_p(:,:,hn) = qlm_l0_p(:,:,hn)
-     qlm_l0_p  (:,:,hn) = qlm_l0  (:,:,hn)
-     qlm_l1_p_p(:,:,hn) = qlm_l1_p(:,:,hn)
-     qlm_l1_p  (:,:,hn) = qlm_l1  (:,:,hn)
-     qlm_l2_p_p(:,:,hn) = qlm_l2_p(:,:,hn)
-     qlm_l2_p  (:,:,hn) = qlm_l2  (:,:,hn)
-     qlm_l3_p_p(:,:,hn) = qlm_l3_p(:,:,hn)
-     qlm_l3_p  (:,:,hn) = qlm_l3  (:,:,hn)
-     
-     qlm_n0_p_p(:,:,hn) = qlm_n0_p(:,:,hn)
-     qlm_n0_p  (:,:,hn) = qlm_n0  (:,:,hn)
-     qlm_n1_p_p(:,:,hn) = qlm_n1_p(:,:,hn)
-     qlm_n1_p  (:,:,hn) = qlm_n1  (:,:,hn)
-     qlm_n2_p_p(:,:,hn) = qlm_n2_p(:,:,hn)
-     qlm_n2_p  (:,:,hn) = qlm_n2  (:,:,hn)
-     qlm_n3_p_p(:,:,hn) = qlm_n3_p(:,:,hn)
-     qlm_n3_p  (:,:,hn) = qlm_n3  (:,:,hn)
-     
-     qlm_m0_p_p(:,:,hn) = qlm_m0_p(:,:,hn)
-     qlm_m0_p  (:,:,hn) = qlm_m0  (:,:,hn)
-     qlm_m1_p_p(:,:,hn) = qlm_m1_p(:,:,hn)
-     qlm_m1_p  (:,:,hn) = qlm_m1  (:,:,hn)
-     qlm_m2_p_p(:,:,hn) = qlm_m2_p(:,:,hn)
-     qlm_m2_p  (:,:,hn) = qlm_m2  (:,:,hn)
-     qlm_m3_p_p(:,:,hn) = qlm_m3_p(:,:,hn)
-     qlm_m3_p  (:,:,hn) = qlm_m3  (:,:,hn)
-     
-     qlm_xi_t_p_p(:,:,hn) = qlm_xi_t_p(:,:,hn)
-     qlm_xi_t_p  (:,:,hn) = qlm_xi_t  (:,:,hn)
-     qlm_xi_p_p_p(:,:,hn) = qlm_xi_p_p(:,:,hn)
-     qlm_xi_p_p  (:,:,hn) = qlm_xi_p  (:,:,hn)
      
   end if
   

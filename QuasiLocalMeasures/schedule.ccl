@@ -4,8 +4,8 @@ STORAGE: qlm_state qlm_scalars
 STORAGE: qlm_state_p qlm_scalars_p
 STORAGE: qlm_grid_int qlm_grid_real qlm_grid_real_p
 STORAGE: qlm_shapes qlm_tetrad_l qlm_tetrad_n qlm_tetrad_m
-STORAGE: qlm_shapes_p qlm_tetrad_l_p qlm_tetrad_n_p qlm_tetrad_m_p
-STORAGE: qlm_killing_vector qlm_killing_vector_p
+STORAGE: qlm_shapes_p
+STORAGE: qlm_killing_vector
 
 # Ensure that there is enough storage for the ADM variables
 STORAGE: ADMBase::metric[3] ADMBase::curv[3] ADMBase::lapse[3] ADMBase::shift[3]
@@ -23,15 +23,15 @@ SCHEDULE qlm_paramcheck AT paramcheck
 {
   OPTIONS: global
   LANG: Fortran
-} "Check Isolated and Dynamical Horizon parameter settings"
+} "Check quasi-local parameter settings"
 
 SCHEDULE qlm_init AT initial
 {
   OPTIONS: global
   LANG: Fortran
-} "Initialise Isolated and Dynamical Horizon calculations"
+} "Initialise quasi-local calculations"
 
-SCHEDULE qlm_calculate AT analysis AFTER SphericalSurface_HasBeenSet
+SCHEDULE qlm_calculate AT analysis AFTER (SphericalSurface_HasBeenSet SetTmunu)
 {
   OPTIONS: global
   LANG: Fortran
@@ -47,4 +47,4 @@ SCHEDULE qlm_calculate AT analysis AFTER SphericalSurface_HasBeenSet
   TRIGGERS: qlm_ricci_scalars qlm_twometric qlm_killing_vector qlm_killed_twometric
   TRIGGERS: qlm_invariant_coordinates qlm_multipole_moments qlm_3determinant
   TRIGGERS: qlm_scalars
-} "Calculate Isolated and Dynamical Horizon quantities"
+} "Calculate quasi-local quantities"

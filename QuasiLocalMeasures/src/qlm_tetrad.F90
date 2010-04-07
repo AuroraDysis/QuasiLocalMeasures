@@ -46,8 +46,8 @@ subroutine qlm_calc_tetrad (CCTK_ARGUMENTS, hn)
   CCTK_REAL    :: nabla_ll(0:3,0:3), nabla_nn(0:3,0:3)
   CCTK_COMPLEX :: nabla_mm(0:3,0:3)
   
-  CCTK_REAL    :: t0, t1, t2
-  logical      :: ce0, ce1, ce2
+  !CCTK_REAL    :: t0, t1, t2
+  !logical      :: ce0, ce1, ce2
   CCTK_REAL    :: delta_space(2)
   
   CCTK_REAL    :: count, accuracy
@@ -153,16 +153,17 @@ subroutine qlm_calc_tetrad (CCTK_ARGUMENTS, hn)
         ee(1,2) = qlm_y(i,j,hn) - qlm_origin_y(hn)
         ee(1,3) = qlm_z(i,j,hn) - qlm_origin_z(hn)
         
-        ee_p(1,1) = qlm_x_p(i,j,hn) - qlm_origin_x_p(hn)
-        ee_p(1,2) = qlm_y_p(i,j,hn) - qlm_origin_y_p(hn)
-        ee_p(1,3) = qlm_z_p(i,j,hn) - qlm_origin_z_p(hn)
+        !ee_p(1,1) = qlm_x_p(i,j,hn) - qlm_origin_x_p(hn)
+        !ee_p(1,2) = qlm_y_p(i,j,hn) - qlm_origin_y_p(hn)
+        !ee_p(1,3) = qlm_z_p(i,j,hn) - qlm_origin_z_p(hn)
         
-        ee_p_p(1,1) = qlm_x_p_p(i,j,hn) - qlm_origin_x_p_p(hn)
-        ee_p_p(1,2) = qlm_y_p_p(i,j,hn) - qlm_origin_y_p_p(hn)
-        ee_p_p(1,3) = qlm_z_p_p(i,j,hn) - qlm_origin_z_p_p(hn)
+        !ee_p_p(1,1) = qlm_x_p_p(i,j,hn) - qlm_origin_x_p_p(hn)
+        !ee_p_p(1,2) = qlm_y_p_p(i,j,hn) - qlm_origin_y_p_p(hn)
+        !ee_p_p(1,3) = qlm_z_p_p(i,j,hn) - qlm_origin_z_p_p(hn)
         
         dee(1,0,:) = 0
-        dee(1,1:3,0) = timederiv (ee(1,1:3), ee_p(1,1:3), ee_p_p(1,1:3), t0,t1,t2, ce0,ce1,ce2)
+        !dee(1,1:3,0) = timederiv (ee(1,1:3), ee_p(1,1:3), ee_p_p(1,1:3), t0,t1,t2, ce0,ce1,ce2)
+        dee(1,1:3,0) = 0
         dee_spher(1,:,1) = 0    ! this is a choice
         dee_spher(1,1,2:3) = deriv (qlm_x(:,:,hn), i,j, delta_space)
         dee_spher(1,2,2:3) = deriv (qlm_y(:,:,hn), i,j, delta_space)
@@ -184,7 +185,8 @@ subroutine qlm_calc_tetrad (CCTK_ARGUMENTS, hn)
         ee_p_p(2:3,3) = deriv (qlm_z_p_p(:,:,hn), i,j, delta_space)
         
         dee(2:3,0,:) = 0
-        dee(2:3,1:3,0) = timederiv (ee(2:3,1:3), ee_p(2:3,1:3), ee_p_p(2:3,1:3), t0,t1,t2, ce0,ce1,ce2)
+        !dee(2:3,1:3,0) = timederiv (ee(2:3,1:3), ee_p(2:3,1:3), ee_p_p(2:3,1:3), t0,t1,t2, ce0,ce1,ce2)
+        dee(2:3,1:3,0) = 0
         dee_spher(2:3,:,1) = 0  ! this is a choice
         dee_spher(2:3,1,2:3) = deriv2 (qlm_x(:,:,hn), i,j, delta_space)
         dee_spher(2:3,2,2:3) = deriv2 (qlm_y(:,:,hn), i,j, delta_space)

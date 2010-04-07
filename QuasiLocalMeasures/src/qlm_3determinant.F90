@@ -37,7 +37,7 @@ SUBROUTINE qlm_calc_3determinant (CCTK_ARGUMENTS, hn)
   CCTK_REAL    :: theta, phi
   
   IF (veryverbose/=0) THEN
-     CALL CCTK_INFO ("Computing 3-Volume Element of Horizon")
+     CALL CCTK_INFO ("Computing 3-Volume Element of Surface")
   END IF
   
   t0 = qlm_time(hn)

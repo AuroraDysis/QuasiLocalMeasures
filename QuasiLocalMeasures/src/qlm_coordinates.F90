@@ -9,6 +9,7 @@ subroutine qlm_calc_coordinates (CCTK_ARGUMENTS, hn)
   use cctk
   use constants
   use qlm_boundary
+  use tensor2
   implicit none
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_FUNCTIONS
@@ -43,7 +44,8 @@ subroutine qlm_calc_coordinates (CCTK_ARGUMENTS, hn)
         qq(1,2) = qlm_qtp(i,j,hn)
         qq(2,2) = qlm_qpp(i,j,hn)
         qq(2,1) = qq(1,2)
-        dtq = qq(1,1) * qq(2,2) - qq(1,2) * qq(2,1)
+        
+        call calc_2det (qq, dtq)
         
         area = area + sqrt(dtq) * qlm_delta_theta(hn) * qlm_delta_phi(hn)
         
@@ -98,7 +100,8 @@ subroutine qlm_calc_coordinates (CCTK_ARGUMENTS, hn)
         qq(1,2) = qlm_qtp(i,j,hn)
         qq(2,2) = qlm_qpp(i,j,hn)
         qq(2,1) = qq(1,2)
-        dtq = qq(1,1) * qq(2,2) - qq(1,2) * qq(2,1)
+        
+        call calc_2det (qq, dtq)
         
         integral_z = integral_z + qlm_inv_z(i,j,hn) * sqrt(dtq) * qlm_delta_theta(hn) * qlm_delta_phi(hn)
         
@@ -172,7 +175,8 @@ contains
     qq(1,2) = qlm_qtp(i,j,hn)
     qq(2,2) = qlm_qpp(i,j,hn)
     qq(2,1) = qq(1,2)
-    dtq = qq(1,1) * qq(2,2) - qq(1,2) * qq(2,1)
+    
+    call calc_2det (qq, dtq)
     
     zdot = vv(1) * (- (1/radius**2) * qlm_xi_p(i,j,hn) * sqrt(dtq)) &
          + vv(2) * (+ (1/radius**2) * qlm_xi_t(i,j,hn) * sqrt(dtq))

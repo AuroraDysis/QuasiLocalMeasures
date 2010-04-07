@@ -25,9 +25,9 @@ subroutine qlm_multipoles (CCTK_ARGUMENTS, hn)
   CCTK_REAL, parameter :: o128=one/128
   
   CCTK_REAL    :: qq(2,2), dtq, rsc
-  CCTK_REAL    :: ee(3,2)
-  CCTK_REAL    :: kk(3,3)
-  CCTK_REAL    :: ll(0:3), nn(0:3), ss(0:3)
+!!$  CCTK_REAL    :: ee(3,2)
+!!$  CCTK_REAL    :: kk(3,3)
+!!$  CCTK_REAL    :: ll(0:3), nn(0:3), ss(0:3)
   CCTK_COMPLEX :: psi2
   CCTK_REAL    :: zz, dzz(2)
   CCTK_REAL    :: area, mass, spin
@@ -74,31 +74,31 @@ subroutine qlm_multipoles (CCTK_ARGUMENTS, hn)
         
         call calc_2det (qq, dtq)
         
-        ee(1,1:2) = deriv (qlm_x(:,:,hn), i, j, delta_space)
-        ee(2,1:2) = deriv (qlm_y(:,:,hn), i, j, delta_space)
-        ee(3,1:2) = deriv (qlm_z(:,:,hn), i, j, delta_space)
-        
-        kk(1,1) = qlm_kxx(i,j)
-        kk(1,2) = qlm_kxy(i,j)
-        kk(1,3) = qlm_kxz(i,j)
-        kk(2,2) = qlm_kyy(i,j)
-        kk(2,3) = qlm_kyz(i,j)
-        kk(3,3) = qlm_kzz(i,j)
-        kk(2,1) = kk(1,2)
-        kk(3,1) = kk(1,3)
-        kk(3,2) = kk(2,3)
-        
-        ll(0) = qlm_l0(i,j,hn)
-        ll(1) = qlm_l1(i,j,hn)
-        ll(2) = qlm_l2(i,j,hn)
-        ll(3) = qlm_l3(i,j,hn)
-        
-        nn(0) = qlm_n0(i,j,hn)
-        nn(1) = qlm_n1(i,j,hn)
-        nn(2) = qlm_n2(i,j,hn)
-        nn(3) = qlm_n3(i,j,hn)
-        
-        ss = (ll - nn) / sqrt(two)
+!!$        ee(1,1:2) = deriv (qlm_x(:,:,hn), i, j, delta_space)
+!!$        ee(2,1:2) = deriv (qlm_y(:,:,hn), i, j, delta_space)
+!!$        ee(3,1:2) = deriv (qlm_z(:,:,hn), i, j, delta_space)
+!!$        
+!!$        kk(1,1) = qlm_kxx(i,j)
+!!$        kk(1,2) = qlm_kxy(i,j)
+!!$        kk(1,3) = qlm_kxz(i,j)
+!!$        kk(2,2) = qlm_kyy(i,j)
+!!$        kk(2,3) = qlm_kyz(i,j)
+!!$        kk(3,3) = qlm_kzz(i,j)
+!!$        kk(2,1) = kk(1,2)
+!!$        kk(3,1) = kk(1,3)
+!!$        kk(3,2) = kk(2,3)
+!!$        
+!!$        ll(0) = qlm_l0(i,j,hn)
+!!$        ll(1) = qlm_l1(i,j,hn)
+!!$        ll(2) = qlm_l2(i,j,hn)
+!!$        ll(3) = qlm_l3(i,j,hn)
+!!$        
+!!$        nn(0) = qlm_n0(i,j,hn)
+!!$        nn(1) = qlm_n1(i,j,hn)
+!!$        nn(2) = qlm_n2(i,j,hn)
+!!$        nn(3) = qlm_n3(i,j,hn)
+!!$        
+!!$        ss = (ll - nn) / sqrt(two)
         
         rsc = qlm_rsc(i,j,hn)
         psi2 = qlm_psi2(i,j,hn)
@@ -156,50 +156,6 @@ subroutine qlm_multipoles (CCTK_ARGUMENTS, hn)
         
      end do
   end do
-  
-  ! Normalise
-  
-!!$  ! This is the normalisation for I_n and L_n
-!!$  qlm_mp_m0(hn) = qlm_mp_m0(hn) / sqrt(4*pi/ 1)
-!!$  qlm_mp_m1(hn) = qlm_mp_m1(hn) / sqrt(4*pi/ 3)
-!!$  qlm_mp_m2(hn) = qlm_mp_m2(hn) / sqrt(4*pi/ 5)
-!!$  qlm_mp_m3(hn) = qlm_mp_m3(hn) / sqrt(4*pi/ 7)
-!!$  qlm_mp_m4(hn) = qlm_mp_m4(hn) / sqrt(4*pi/ 9)
-!!$  qlm_mp_m5(hn) = qlm_mp_m5(hn) / sqrt(4*pi/11)
-!!$  qlm_mp_m6(hn) = qlm_mp_m6(hn) / sqrt(4*pi/13)
-!!$  qlm_mp_m7(hn) = qlm_mp_m7(hn) / sqrt(4*pi/15)
-!!$  qlm_mp_m8(hn) = qlm_mp_m8(hn) / sqrt(4*pi/17)
-!!$  
-!!$  qlm_mp_j0(hn) = qlm_mp_j0(hn) / sqrt(4*pi/ 1)
-!!$  qlm_mp_j1(hn) = qlm_mp_j1(hn) / sqrt(4*pi/ 3)
-!!$  qlm_mp_j2(hn) = qlm_mp_j2(hn) / sqrt(4*pi/ 5)
-!!$  qlm_mp_j3(hn) = qlm_mp_j3(hn) / sqrt(4*pi/ 7)
-!!$  qlm_mp_j4(hn) = qlm_mp_j4(hn) / sqrt(4*pi/ 9)
-!!$  qlm_mp_j5(hn) = qlm_mp_j5(hn) / sqrt(4*pi/11)
-!!$  qlm_mp_j6(hn) = qlm_mp_j6(hn) / sqrt(4*pi/13)
-!!$  qlm_mp_j7(hn) = qlm_mp_j7(hn) / sqrt(4*pi/15)
-!!$  qlm_mp_j8(hn) = qlm_mp_j8(hn) / sqrt(4*pi/17)
-  
-  ! This is the normalisation for M_n and J_n
-  qlm_mp_m0(hn) = qlm_mp_m0(hn) * qlm_mass(hn) * qlm_radius(hn)**0 / (2*pi)
-  qlm_mp_m1(hn) = qlm_mp_m1(hn) * qlm_mass(hn) * qlm_radius(hn)**1 / (2*pi)
-  qlm_mp_m2(hn) = qlm_mp_m2(hn) * qlm_mass(hn) * qlm_radius(hn)**2 / (2*pi)
-  qlm_mp_m3(hn) = qlm_mp_m3(hn) * qlm_mass(hn) * qlm_radius(hn)**3 / (2*pi)
-  qlm_mp_m4(hn) = qlm_mp_m4(hn) * qlm_mass(hn) * qlm_radius(hn)**4 / (2*pi)
-  qlm_mp_m5(hn) = qlm_mp_m5(hn) * qlm_mass(hn) * qlm_radius(hn)**5 / (2*pi)
-  qlm_mp_m6(hn) = qlm_mp_m6(hn) * qlm_mass(hn) * qlm_radius(hn)**6 / (2*pi)
-  qlm_mp_m7(hn) = qlm_mp_m7(hn) * qlm_mass(hn) * qlm_radius(hn)**7 / (2*pi)
-  qlm_mp_m8(hn) = qlm_mp_m8(hn) * qlm_mass(hn) * qlm_radius(hn)**8 / (2*pi)
-  
-  qlm_mp_j0(hn) = qlm_mp_j0(hn) * qlm_radius(hn)**1 / (4*pi)
-  qlm_mp_j1(hn) = qlm_mp_j1(hn) * qlm_radius(hn)**2 / (4*pi)
-  qlm_mp_j2(hn) = qlm_mp_j2(hn) * qlm_radius(hn)**3 / (4*pi)
-  qlm_mp_j3(hn) = qlm_mp_j3(hn) * qlm_radius(hn)**4 / (4*pi)
-  qlm_mp_j4(hn) = qlm_mp_j4(hn) * qlm_radius(hn)**5 / (4*pi)
-  qlm_mp_j5(hn) = qlm_mp_j5(hn) * qlm_radius(hn)**6 / (4*pi)
-  qlm_mp_j6(hn) = qlm_mp_j6(hn) * qlm_radius(hn)**7 / (4*pi)
-  qlm_mp_j7(hn) = qlm_mp_j7(hn) * qlm_radius(hn)**8 / (4*pi)
-  qlm_mp_j8(hn) = qlm_mp_j8(hn) * qlm_radius(hn)**9 / (4*pi)
   
 contains
   
@@ -321,3 +277,64 @@ contains
   end function dp8
   
 end subroutine qlm_multipoles
+
+
+
+subroutine qlm_multipoles_normalise (CCTK_ARGUMENTS, hn)
+  use cctk
+  use constants
+  implicit none
+  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_FUNCTIONS
+  DECLARE_CCTK_PARAMETERS
+  integer :: hn
+  
+  if (veryverbose/=0) then
+     call CCTK_INFO ("Normalising multipole moments")
+  end if
+  
+  ! Normalise
+  
+!!$  ! This is the normalisation for I_n and L_n
+!!$  qlm_mp_m0(hn) = qlm_mp_m0(hn) / sqrt(4*pi/ 1)
+!!$  qlm_mp_m1(hn) = qlm_mp_m1(hn) / sqrt(4*pi/ 3)
+!!$  qlm_mp_m2(hn) = qlm_mp_m2(hn) / sqrt(4*pi/ 5)
+!!$  qlm_mp_m3(hn) = qlm_mp_m3(hn) / sqrt(4*pi/ 7)
+!!$  qlm_mp_m4(hn) = qlm_mp_m4(hn) / sqrt(4*pi/ 9)
+!!$  qlm_mp_m5(hn) = qlm_mp_m5(hn) / sqrt(4*pi/11)
+!!$  qlm_mp_m6(hn) = qlm_mp_m6(hn) / sqrt(4*pi/13)
+!!$  qlm_mp_m7(hn) = qlm_mp_m7(hn) / sqrt(4*pi/15)
+!!$  qlm_mp_m8(hn) = qlm_mp_m8(hn) / sqrt(4*pi/17)
+!!$  
+!!$  qlm_mp_j0(hn) = qlm_mp_j0(hn) / sqrt(4*pi/ 1)
+!!$  qlm_mp_j1(hn) = qlm_mp_j1(hn) / sqrt(4*pi/ 3)
+!!$  qlm_mp_j2(hn) = qlm_mp_j2(hn) / sqrt(4*pi/ 5)
+!!$  qlm_mp_j3(hn) = qlm_mp_j3(hn) / sqrt(4*pi/ 7)
+!!$  qlm_mp_j4(hn) = qlm_mp_j4(hn) / sqrt(4*pi/ 9)
+!!$  qlm_mp_j5(hn) = qlm_mp_j5(hn) / sqrt(4*pi/11)
+!!$  qlm_mp_j6(hn) = qlm_mp_j6(hn) / sqrt(4*pi/13)
+!!$  qlm_mp_j7(hn) = qlm_mp_j7(hn) / sqrt(4*pi/15)
+!!$  qlm_mp_j8(hn) = qlm_mp_j8(hn) / sqrt(4*pi/17)
+  
+  ! This is the normalisation for M_n and J_n
+  qlm_mp_m0(hn) = qlm_mp_m0(hn) * qlm_mass(hn) * qlm_radius(hn)**0 / (2*pi)
+  qlm_mp_m1(hn) = qlm_mp_m1(hn) * qlm_mass(hn) * qlm_radius(hn)**1 / (2*pi)
+  qlm_mp_m2(hn) = qlm_mp_m2(hn) * qlm_mass(hn) * qlm_radius(hn)**2 / (2*pi)
+  qlm_mp_m3(hn) = qlm_mp_m3(hn) * qlm_mass(hn) * qlm_radius(hn)**3 / (2*pi)
+  qlm_mp_m4(hn) = qlm_mp_m4(hn) * qlm_mass(hn) * qlm_radius(hn)**4 / (2*pi)
+  qlm_mp_m5(hn) = qlm_mp_m5(hn) * qlm_mass(hn) * qlm_radius(hn)**5 / (2*pi)
+  qlm_mp_m6(hn) = qlm_mp_m6(hn) * qlm_mass(hn) * qlm_radius(hn)**6 / (2*pi)
+  qlm_mp_m7(hn) = qlm_mp_m7(hn) * qlm_mass(hn) * qlm_radius(hn)**7 / (2*pi)
+  qlm_mp_m8(hn) = qlm_mp_m8(hn) * qlm_mass(hn) * qlm_radius(hn)**8 / (2*pi)
+  
+  qlm_mp_j0(hn) = qlm_mp_j0(hn) * qlm_radius(hn)**1 / (4*pi)
+  qlm_mp_j1(hn) = qlm_mp_j1(hn) * qlm_radius(hn)**2 / (4*pi)
+  qlm_mp_j2(hn) = qlm_mp_j2(hn) * qlm_radius(hn)**3 / (4*pi)
+  qlm_mp_j3(hn) = qlm_mp_j3(hn) * qlm_radius(hn)**4 / (4*pi)
+  qlm_mp_j4(hn) = qlm_mp_j4(hn) * qlm_radius(hn)**5 / (4*pi)
+  qlm_mp_j5(hn) = qlm_mp_j5(hn) * qlm_radius(hn)**6 / (4*pi)
+  qlm_mp_j6(hn) = qlm_mp_j6(hn) * qlm_radius(hn)**7 / (4*pi)
+  qlm_mp_j7(hn) = qlm_mp_j7(hn) * qlm_radius(hn)**8 / (4*pi)
+  qlm_mp_j8(hn) = qlm_mp_j8(hn) * qlm_radius(hn)**9 / (4*pi)
+  
+end subroutine qlm_multipoles_normalise
