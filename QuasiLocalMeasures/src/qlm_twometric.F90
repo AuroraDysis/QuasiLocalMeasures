@@ -23,17 +23,14 @@ subroutine qlm_calc_twometric (CCTK_ARGUMENTS, hn)
   DECLARE_CCTK_PARAMETERS
   integer :: hn
   
-  CCTK_REAL, parameter :: two = 2, half = 1d0/2d0
-  CCTK_REAL :: gg(3,3), dgg(3,3,3), ddgg(3,3,3,3)
-  CCTK_REAL :: gamma(3,3,3), dgamma(3,3,3,3), ri(3,3), rsc
-  CCTK_REAL :: ee(3,2), dee(3,2,2), ddee(3,2,2,2)
-  CCTK_REAL :: qq(2,2), dqq(2,2,2), ddqq(2,2,2,2)
-  CCTK_REAL :: dtq, qu(2,2), dqu(2,2,2)
+  CCTK_REAL :: gg(3,3), dgg(3,3,3)
+  CCTK_REAL :: ee(3,2), dee(3,2,2)
+  CCTK_REAL :: qq(2,2), dqq(2,2,2)
  
   CCTK_REAL :: delta_space(2)
   
   integer   :: i, j
-  integer   :: a, b, c, d, e, f, g, h
+  integer   :: a, b, c, d, e, f
   
   if (veryverbose/=0) then
      call CCTK_INFO ("Calculating two-metric")
@@ -77,49 +74,6 @@ subroutine qlm_calc_twometric (CCTK_ARGUMENTS, hn)
         dgg(3,1,:) = dgg(1,3,:)
         dgg(3,2,:) = dgg(2,3,:)
         
-        ddgg(1,1,1,1) = qlm_ddgxxxx(i,j)
-        ddgg(1,2,1,1) = qlm_ddgxyxx(i,j)
-        ddgg(1,3,1,1) = qlm_ddgxzxx(i,j)
-        ddgg(2,2,1,1) = qlm_ddgyyxx(i,j)
-        ddgg(2,3,1,1) = qlm_ddgyzxx(i,j)
-        ddgg(3,3,1,1) = qlm_ddgzzxx(i,j)
-        ddgg(1,1,1,2) = qlm_ddgxxxy(i,j)
-        ddgg(1,2,1,2) = qlm_ddgxyxy(i,j)
-        ddgg(1,3,1,2) = qlm_ddgxzxy(i,j)
-        ddgg(2,2,1,2) = qlm_ddgyyxy(i,j)
-        ddgg(2,3,1,2) = qlm_ddgyzxy(i,j)
-        ddgg(3,3,1,2) = qlm_ddgzzxy(i,j)
-        ddgg(1,1,1,3) = qlm_ddgxxxz(i,j)
-        ddgg(1,2,1,3) = qlm_ddgxyxz(i,j)
-        ddgg(1,3,1,3) = qlm_ddgxzxz(i,j)
-        ddgg(2,2,1,3) = qlm_ddgyyxz(i,j)
-        ddgg(2,3,1,3) = qlm_ddgyzxz(i,j)
-        ddgg(3,3,1,3) = qlm_ddgzzxz(i,j)
-        ddgg(1,1,2,2) = qlm_ddgxxyy(i,j)
-        ddgg(1,2,2,2) = qlm_ddgxyyy(i,j)
-        ddgg(1,3,2,2) = qlm_ddgxzyy(i,j)
-        ddgg(2,2,2,2) = qlm_ddgyyyy(i,j)
-        ddgg(2,3,2,2) = qlm_ddgyzyy(i,j)
-        ddgg(3,3,2,2) = qlm_ddgzzyy(i,j)
-        ddgg(1,1,2,3) = qlm_ddgxxyz(i,j)
-        ddgg(1,2,2,3) = qlm_ddgxyyz(i,j)
-        ddgg(1,3,2,3) = qlm_ddgxzyz(i,j)
-        ddgg(2,2,2,3) = qlm_ddgyyyz(i,j)
-        ddgg(2,3,2,3) = qlm_ddgyzyz(i,j)
-        ddgg(3,3,2,3) = qlm_ddgzzyz(i,j)
-        ddgg(1,1,3,3) = qlm_ddgxxzz(i,j)
-        ddgg(1,2,3,3) = qlm_ddgxyzz(i,j)
-        ddgg(1,3,3,3) = qlm_ddgxzzz(i,j)
-        ddgg(2,2,3,3) = qlm_ddgyyzz(i,j)
-        ddgg(2,3,3,3) = qlm_ddgyzzz(i,j)
-        ddgg(3,3,3,3) = qlm_ddgzzzz(i,j)
-        ddgg(2,1,:,:) = ddgg(1,2,:,:)
-        ddgg(3,1,:,:) = ddgg(1,3,:,:)
-        ddgg(3,2,:,:) = ddgg(2,3,:,:)
-        ddgg(:,:,2,1) = ddgg(:,:,1,2)
-        ddgg(:,:,3,1) = ddgg(:,:,1,3)
-        ddgg(:,:,3,2) = ddgg(:,:,2,3)
-        
         ee(1,1:2) = deriv (qlm_x(:,:,hn), i, j, delta_space)
         ee(2,1:2) = deriv (qlm_y(:,:,hn), i, j, delta_space)
         ee(3,1:2) = deriv (qlm_z(:,:,hn), i, j, delta_space)
@@ -127,10 +81,6 @@ subroutine qlm_calc_twometric (CCTK_ARGUMENTS, hn)
         dee(1,1:2,1:2) = deriv2 (qlm_x(:,:,hn), i, j, delta_space)
         dee(2,1:2,1:2) = deriv2 (qlm_y(:,:,hn), i, j, delta_space)
         dee(3,1:2,1:2) = deriv2 (qlm_z(:,:,hn), i, j, delta_space)
-        
-        ddee(1,1:2,1:2,1:2) = deriv3 (qlm_x(:,:,hn), i, j, delta_space)
-        ddee(2,1:2,1:2,1:2) = deriv3 (qlm_y(:,:,hn), i, j, delta_space)
-        ddee(3,1:2,1:2,1:2) = deriv3 (qlm_z(:,:,hn), i, j, delta_space)
         
         do a=1,2
            do b=1,2
@@ -160,61 +110,18 @@ subroutine qlm_calc_twometric (CCTK_ARGUMENTS, hn)
            end do
         end do
         
-        do a=1,2
-           do b=1,2
-              do c=1,2
-                 do d=1,2
-                    ddqq(a,b,c,d) = 0
-                    do e=1,3
-                       do f=1,3
-                          do g=1,3
-                             do h=1,3
-                                ddqq(a,b,c,d) = ddqq(a,b,c,d) + ddgg(e,f,g,h) * ee(e,a) * ee(f,b) * ee(g,c) * ee(h,d)
-                             end do
-                             ddqq(a,b,c,d) = ddqq(a,b,c,d) + dgg(e,f,g) * dee(e,a,d) * ee(f,b) * ee(g,c)
-                             ddqq(a,b,c,d) = ddqq(a,b,c,d) + dgg(e,f,g) * ee(e,a) * dee(f,b,d) * ee(g,c)
-                             ddqq(a,b,c,d) = ddqq(a,b,c,d) + dgg(e,f,g) * ee(e,a) * ee(f,b) * dee(g,c,d)
-                             ddqq(a,b,c,d) = ddqq(a,b,c,d) + dgg(e,f,g) * dee(e,a,c) * ee(f,b) * ee(g,d)
-                             ddqq(a,b,c,d) = ddqq(a,b,c,d) + dgg(e,f,g) * ee(e,a) * dee(f,b,c) * ee(g,d)
-                          end do
-                          ddqq(a,b,c,d) = ddqq(a,b,c,d) + gg(e,f) * ddee(e,a,c,d) * ee(f,b)
-                          ddqq(a,b,c,d) = ddqq(a,b,c,d) + gg(e,f) * dee(e,a,c) * dee(f,b,d)
-                          ddqq(a,b,c,d) = ddqq(a,b,c,d) + gg(e,f) * dee(e,a,d) * dee(f,b,c)
-                          ddqq(a,b,c,d) = ddqq(a,b,c,d) + gg(e,f) * ee(e,a) * ddee(f,b,c,d)
-                       end do
-                    end do
-                 end do
-              end do
-           end do
-        end do
-        
-        call calc_2det (qq, dtq)
-        call calc_2inv (qq, dtq, qu)
-        call calc_2invderiv (qu, dqq, dqu)
-        
-        call calc_2connections (qu, dqq, gamma)
-        call calc_2connectionderivs (qu, dqq, dqu, ddqq, dgamma)
-        call calc_2ricci (gamma, dgamma, ri)
-        
-        call calc_2trace (qu, ri, rsc)
-        
         ! Could also calculate this as:
         !    q^ab = m^a mbar^b + mbar^a m^b
         qlm_qtt(i,j,hn) = qq(1,1)
         qlm_qtp(i,j,hn) = qq(1,2)
         qlm_qpp(i,j,hn) = qq(2,2)
         
-        ! Could also calculate this from NP coefficients alpha and
-        ! beta (and epsilon and gamma?)
         qlm_dqttt(i,j,hn) = dqq(1,1,1)
         qlm_dqtpt(i,j,hn) = dqq(1,2,1)
         qlm_dqppt(i,j,hn) = dqq(2,2,1)
         qlm_dqttp(i,j,hn) = dqq(1,1,2)
         qlm_dqtpp(i,j,hn) = dqq(1,2,2)
         qlm_dqppp(i,j,hn) = dqq(2,2,2)
-        
-        ! Could also calculate this from 3Rsc and extrinsic curvature
-        qlm_rsc(i,j,hn) = rsc
         
      end do
   end do
@@ -229,7 +136,5 @@ subroutine qlm_calc_twometric (CCTK_ARGUMENTS, hn)
   call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqttp(:,:,hn), -1)
   call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqtpp(:,:,hn), -1)
   call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqppp(:,:,hn), -1)
- 
-  call set_boundary (CCTK_PASS_FTOF, hn, qlm_rsc(:,:,hn), +1)
   
 end subroutine qlm_calc_twometric

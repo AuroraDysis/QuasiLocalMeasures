@@ -26,7 +26,7 @@ subroutine qlm_calc_weyl_scalars (CCTK_ARGUMENTS, hn)
   CCTK_REAL    :: gg(3,3), dgg(3,3,3), ddgg(3,3,3,3), gg_dot(3,3), gg_dot2(3,3), dgg_dot(3,3,3)
   CCTK_REAL    :: kk(3,3), dkk(3,3,3), kk_dot(3,3)
   CCTK_REAL    :: tt(3,3)
-  CCTK_REAL    :: dtg, gu(3,3), dgu(3,3,3), gamma(3,3,3), dgamma(3,3,3,3), ri(3,3)
+  CCTK_REAL    :: dtg, gu(3,3), dgu(3,3,3), gamma(3,3,3), dgamma(3,3,3,3), ri(3,3), rsc
   CCTK_REAL    :: g4(0:3,0:3), dg4(0:3,0:3,0:3), ddg4(0:3,0:3,0:3,0:3)
   CCTK_REAL    :: gu4(0:3,0:3), dgu4(0:3,0:3,0:3)
   CCTK_REAL    :: gamma4(0:3,0:3,0:3), dgamma4(0:3,0:3,0:3,0:3)
@@ -34,6 +34,10 @@ subroutine qlm_calc_weyl_scalars (CCTK_ARGUMENTS, hn)
   CCTK_REAL    :: rm4(0:3,0:3,0:3,0:3), we4(0:3,0:3,0:3,0:3)
   CCTK_REAL    :: ll(0:3), nn(0:3)
   CCTK_COMPLEX :: mm(0:3)
+  CCTK_REAL    :: ss(0:3)
+  CCTK_REAL    :: nabla_ll(0:3,0:3), nabla_nn(0:3,0:3)
+  CCTK_REAL    :: nabla_ss(0:3,0:3)
+  CCTK_REAL    :: trkAH, kk_kk, tmpR
   
   integer      :: i, j
   integer      :: a, b, c, d
@@ -182,6 +186,13 @@ subroutine qlm_calc_weyl_scalars (CCTK_ARGUMENTS, hn)
         mm(2) = qlm_m2(i,j,hn)
         mm(3) = qlm_m3(i,j,hn)
         
+        ss = (ll - nn) / sqrt(two)
+        
+        nabla_ll = qlm_tetrad_derivs(i,j)%nabla_ll
+        nabla_nn = qlm_tetrad_derivs(i,j)%nabla_nn
+        
+        nabla_ss = (nabla_ll - nabla_nn) / sqrt(two)
+        
         
         
         ! Calculate 4-metric
@@ -191,6 +202,7 @@ subroutine qlm_calc_weyl_scalars (CCTK_ARGUMENTS, hn)
         call calc_connections (gu, dgg, gamma)
         call calc_connectionderivs (gu, dgg, dgu, ddgg, dgamma)
         call calc_ricci (gamma, dgamma, ri)
+        call calc_trace (gu, ri, rsc)
         
         call calc_3metricdot_simple (kk, gg_dot)
         call calc_3metricderivdot_simple (dkk, dgg_dot)
@@ -278,6 +290,37 @@ subroutine qlm_calc_weyl_scalars (CCTK_ARGUMENTS, hn)
              & + 2 * real (qlm_psi2(i,j,hn)) &
              & + 4 * qlm_lambda(i,j,hn)
         
+        
+
+        trkAH = 0
+        do a=1,3
+           do b=1,3
+              trkAH = trkAH + (gu(a,b) - ss(a) * ss(b)) * nabla_ss(a,b) 
+           end do
+        end do
+        
+        kk_kk = 0
+        do a=1,3
+           do b=1,3
+              do c=1,3
+                 do d=1,3
+                    kk_kk = kk_kk + &
+                         (gu(a,c) - ss(a) * ss(c)) * nabla_ss(a,b) * &
+                         (gu(b,d) - ss(b) * ss(d)) * nabla_ss(c,d)
+                 end do
+              end do
+           end do
+        end do
+        
+        tmpR = 0
+        do a=1,3
+           do b=1,3
+              tmpR = tmpR + ri(a,b) * ss(a) * ss(b)
+           end do
+        end do
+        
+        qlm_rsc(i,j,hn) = rsc - 2*tmpR + trkAH**2 - kk_kk
+        
      end do
   end do
   
@@ -305,5 +348,7 @@ subroutine qlm_calc_weyl_scalars (CCTK_ARGUMENTS, hn)
   call set_boundary (CCTK_PASS_FTOF, hn, qlm_lambda(:,:,hn), +1)
   
   call set_boundary (CCTK_PASS_FTOF, hn, qlm_lie_n_theta_l(:,:,hn), +1)
+ 
+  call set_boundary (CCTK_PASS_FTOF, hn, qlm_rsc(:,:,hn), +1)
   
 end subroutine qlm_calc_weyl_scalars

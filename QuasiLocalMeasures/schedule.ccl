@@ -7,11 +7,9 @@ STORAGE: qlm_shapes qlm_tetrad_l qlm_tetrad_n qlm_tetrad_m
 STORAGE: qlm_shapes_p
 STORAGE: qlm_killing_vector
 
-# Ensure that there is enough storage for the ADM variables
-STORAGE: ADMBase::metric[3] ADMBase::curv[3] ADMBase::lapse[3] ADMBase::shift[3]
 
 
-
+# These variables need storage so that they can be output
 STORAGE: qlm_coordinates qlm_coordinates_p
 STORAGE: qlm_newman_penrose qlm_weyl_scalars
 STORAGE: qlm_ricci_scalars qlm_twometric qlm_killed_twometric

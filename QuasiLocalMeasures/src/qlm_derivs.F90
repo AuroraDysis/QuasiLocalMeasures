@@ -10,9 +10,7 @@ module qlm_derivs
   public operator(.dot.)
   public deriv
   public deriv2
-  public deriv3
   public timederiv
-  public timederiv2
   
   interface deriv
      module procedure rderiv
@@ -22,18 +20,8 @@ module qlm_derivs
      module procedure rderiv2
   end interface
   
-  interface deriv3
-     module procedure rderiv3
-  end interface
-  
   interface timederiv
      module procedure rtimederiv
-     module procedure ctimederiv
-  end interface
-  
-  interface timederiv2
-     module procedure rtimederiv2
-     module procedure ctimederiv2
   end interface
   
   interface operator(.outer.)
@@ -163,47 +151,6 @@ contains
     end select
   end function rderiv2
   
-  pure function rderiv3 (f, i, j, dx) result (dddf)
-    DECLARE_CCTK_PARAMETERS
-    CCTK_REAL, intent(in) :: f(:,:)
-    integer,   intent(in) :: i, j
-    CCTK_REAL, intent(in) :: dx(2)
-    CCTK_REAL             :: dddf(2,2,2)
-    
-    select case (spatial_order)
-    case (2, 4)
-       ! No separate 4th order stencil, since that would need 3 ghost
-       ! zones
-        dddf(1,1,1) = (-   f(i-2,j  ) &
-             &         + 2*f(i-1,j  ) &
-             &         - 2*f(i+1,j  ) &
-             &         +   f(i+2,j  )) / (2*dx(1)**3)
-        dddf(1,1,2) = (    f(i+1,j+1) &
-             &         - 2*f(i  ,j+1) &
-             &         +   f(i-1,j+1) &
-             &         -   f(i+1,j-1) &
-             &         + 2*f(i  ,j-1) &
-             &         -   f(i-1,j-1)) / (2 * dx(1)**2 * dx(2))
-        dddf(1,2,2) = (    f(i+1,j+1) &
-             &         - 2*f(i+1,j  ) &
-             &         +   f(i+1,j-1) &
-             &         -   f(i-1,j+1) &
-             &         + 2*f(i-1,j  ) &
-             &         -   f(i-1,j-1)) / (2 * dx(1) * dx(2)**2)
-        dddf(2,2,2) = (-   f(i  ,j-2) &
-             &         + 2*f(i  ,j-1) &
-             &         - 2*f(i  ,j+1) &
-             &         +   f(i  ,j+2)) / (2*dx(2)**3)
-        dddf(1,2,1) = dddf(1,1,2)
-        dddf(2,1,1) = dddf(1,1,2)
-        dddf(2,1,2) = dddf(1,2,2)
-        dddf(2,2,1) = dddf(1,2,2)
-    case default
-       ! call CCTK_WARN (0, "internal error")
-       dddf = TAT_nan()
-    end select
-  end function rderiv3
-  
   
   
   ! Calculate a time derivate from several time levels
@@ -234,55 +181,5 @@ contains
        fdot = (fdot1 * dt2 - fdot2 * dt1) / (dt2 - dt1)
     end if
   end function rtimederiv
-  
-  pure elemental function ctimederiv (f0, f1, f2, t0, t1, t2, ce0, ce1, ce2) result (fdot)
-    CCTK_COMPLEX, intent(in) :: f0, f1, f2
-    CCTK_REAL,    intent(in) :: t0, t1, t2
-    logical,      intent(in) :: ce0, ce1, ce2
-    CCTK_COMPLEX             :: fdot
-    
-    fdot = cmplx(timederiv(real(f0),real(f1),real(f2), t0,t1,t2, ce0,ce1,ce2), &
-         &       timederiv(aimag(f0),aimag(f1),aimag(f2), t0,t1,t2, ce0,ce1,ce2), &
-         &       kind(fdot))
-  end function ctimederiv
-  
-  pure elemental function rtimederiv2 (f0, f1, f2, t0, t1, t2, ce0, ce1, ce2) result (fdotdot)
-    CCTK_REAL, intent(in) :: f0, f1, f2
-    CCTK_REAL, intent(in) :: t0, t1, t2
-    logical,   intent(in) :: ce0, ce1, ce2
-    CCTK_REAL             :: fdotdot
-    CCTK_REAL :: dt1, dt2
-    CCTK_REAL :: fdotdot1, fdotdot2
-    
-!!$    dt1 = qlm_time(hn) - qlm_time_p(hn)
-!!$    dt2 = qlm_time(hn) - qlm_time_p_p(hn)
-    dt1 = t0 - t1
-    dt2 = t0 - t2
-    
-    if (ce0 .or. ce1) then
-       fdotdot = 0
-    else if (ce2) then
-       fdotdot = 0
-    else
-       ! f(dt1) = f(0) + dt1 f'(0) + dt1^2/2 f''(0)
-       ! f(dt2) = f(0) + dt2 f'(0) + dt2^2/2 f''(0)
-       ! f''(0) = [f(dt1) - f(0)] / [dt1^2/2] - f'(0) / [dt1/2]
-       ! f''(0) = [f(dt2) - f(0)] / [dt2^2/2] - f'(0) / [dt2/2]
-       fdotdot1 = (f1 - f0) / (dt1**2/2)
-       fdotdot2 = (f2 - f0) / (dt2**2/2)
-       fdotdot = (fdotdot1 * dt1 - fdotdot2 * dt2) / (dt1 - dt2)
-    end if
-  end function rtimederiv2
-  
-  pure elemental function ctimederiv2 (f0, f1, f2, t0, t1, t2, ce0, ce1, ce2) result (fdotdot)
-    CCTK_COMPLEX, intent(in) :: f0, f1, f2
-    CCTK_REAL,    intent(in) :: t0, t1, t2
-    logical,      intent(in) :: ce0, ce1, ce2
-    CCTK_COMPLEX             :: fdotdot
-    
-    fdotdot = cmplx(timederiv2(real(f0),real(f1),real(f2), t0,t1,t2, ce0,ce1,ce2), &
-         &          timederiv2(aimag(f0),aimag(f1),aimag(f2), t0,t1,t2, ce0,ce1,ce2), &
-         &          kind(fdotdot))
-  end function ctimederiv2
   
 end module qlm_derivs
