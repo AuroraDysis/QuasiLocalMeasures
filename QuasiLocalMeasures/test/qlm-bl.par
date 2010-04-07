@@ -256,8 +256,9 @@ ActiveThorns = "CarpetIOScalar"
 
 IOScalar::one_file_per_group = yes
 
-IOScalar::outScalar_every = 1
-IOScalar::outScalar_vars  = "
+IOScalar::outScalar_every      = 1
+IOScalar::outScalar_reductions = "average count maximum minimum norm1 norm2 norm_inf"
+IOScalar::outScalar_vars       = "
         CarpetReduce::weight
         ADMBase::metric
         ADMBase::curv
@@ -302,10 +303,6 @@ IOASCII::out0D_vars  = "
 IOASCII::out1D_every = 1
 IOASCII::out1D_vars  = "
         CarpetReduce::weight
-        ADMBase::metric
-        ADMBase::curv
-        ADMBase::lapse
-        ADMBase::shift
         SphericalSurface::sf_radius
         QuasiLocalMeasures::qlm_shapes
         QuasiLocalMeasures::qlm_coordinates
