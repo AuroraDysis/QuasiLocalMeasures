@@ -68,6 +68,14 @@ KEYWORD killing_vector_normalisation "Method for normalising the Killing vector 
   "median"  :: "Use the median integral line"
 } "average"
 
+BOOLEAN output_vtk "Output a VTK file with the main 2D arrays?" STEERABLE=always
+{
+} "no"
+
+INT output_vtk_every "Order of spatial differencing"
+{
+  *:* :: "output every so many iterations"
+} 1
 
 
 SHARES: ADMBase

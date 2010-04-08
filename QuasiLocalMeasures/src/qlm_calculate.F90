@@ -18,6 +18,9 @@ subroutine qlm_calculate (CCTK_ARGUMENTS)
   integer   :: h0, hn
   
   character :: msg*1000
+  character :: slabel*2, ilabel*8
+  character(len=200) :: odir
+  integer   :: nchars
  
   logical   :: did_allocate
   
@@ -108,6 +111,15 @@ subroutine qlm_calculate (CCTK_ARGUMENTS)
         call qlm_analyse (CCTK_PASS_FTOF, hn)
         if (qlm_have_killing_vector(hn) /= 0) then
            call qlm_multipoles_normalise (CCTK_PASS_FTOF, hn)
+        end if
+
+        if (output_vtk /= 0) then
+          if (mod(cctk_iteration,output_vtk_every) == 0) then
+            write(slabel,'(I2.2)'), hn
+            write(ilabel,'(I8.8)'), cctk_iteration
+            call CCTK_ParameterValString (nchars, "out_dir", "IOUtil", odir) 
+            call qlm_outputvtk (CCTK_PASS_FTOF, hn, odir(1:nchars)//'/surface'//slabel//'_'//ilabel//'.vtk', 1)
+          end if
         end if
         
 9999    continue

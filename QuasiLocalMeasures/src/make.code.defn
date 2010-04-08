@@ -21,6 +21,7 @@ SRCS =  qlm_3determinant.F90			\
         qlm_killing_transportation.F90		\
         qlm_multipoles.F90			\
         qlm_newman_penrose.F90			\
+        qlm_output_vtk.F90			\
         qlm_paramcheck.F90			\
         qlm_set_coordinates.F90			\
         qlm_tetrad.F90				\
