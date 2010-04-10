@@ -30,7 +30,7 @@ subroutine qlm_analyse (CCTK_ARGUMENTS, hn)
   CCTK_REAL    :: gg(3,3), dgg(3,3,3), kk(3,3), gg_dot(3,3)
   CCTK_REAL    :: g4(0:3,0:3), dg4(0:3,0:3,0:3)
   CCTK_REAL    :: h4(0:3,0:3), dh4(0:3,0:3,0:3)
-  CCTK_REAL    :: dtg, gu(3,3), trk
+  CCTK_REAL    :: dtg, gu(3,3), trk, dgu(3,3,3)
   CCTK_REAL    :: xx(3), ee(3,2)
   CCTK_REAL    :: xi(2), xi1(3)
   CCTK_REAL    :: qq(2,2), dtq
@@ -53,7 +53,7 @@ subroutine qlm_analyse (CCTK_ARGUMENTS, hn)
 
   integer   :: i_eq, j_p0, j_p2
   
-  integer   :: i, j, l
+  integer   :: i, j, l, m
   integer   :: a, b, c
   
   character :: msg*1000
@@ -217,6 +217,9 @@ subroutine qlm_analyse (CCTK_ARGUMENTS, hn)
         
         ! Calculate 4-metric
         call calc_4metricderivs_simple (gg, dgg, gg_dot, g4,dg4)
+
+        ! Calculate derivative of 4-metric inverse
+        call calc_invderiv (gu, dgg, dgu)
         
         ! "Perturbative" 4-metric
         h4 = g4 - eta4
