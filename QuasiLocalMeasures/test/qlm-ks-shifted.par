@@ -37,7 +37,7 @@ ActiveThorns = "Carpet CarpetLib CarpetInterp CarpetReduce"
 
 Carpet::domain_from_coordbase = yes
 driver::ghost_size            = 3
-Carpet::init_fill_timelevels  = yes
+Carpet::init_each_timelevel   = yes
 
 Carpet::poison_new_timelevels = yes
 CarpetLib::poison_new_memory  = yes
