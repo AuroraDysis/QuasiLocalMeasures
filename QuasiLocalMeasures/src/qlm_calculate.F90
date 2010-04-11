@@ -27,7 +27,7 @@ subroutine qlm_calculate (CCTK_ARGUMENTS)
   did_allocate = .false.
   
   num_procs = CCTK_nProcs (cctkGH)
-  my_proc = CCTK_MyProc (cctkGH)
+  my_proc   = CCTK_MyProc (cctkGH)
   
   do pass = 1, (num_surfaces + num_procs - 1) / num_procs
      
@@ -47,7 +47,7 @@ subroutine qlm_calculate (CCTK_ARGUMENTS)
      
      if (verbose/=0 .or. veryverbose/=0) then
         if (hn > 0) then
-           write (msg, '("Calculating Isolated and Dynamical Horizon quantities for horizon ",i4)') hn-1
+           write (msg, '("Calculating quasi-local quantities for surface ",i4)') hn-1
         else
            write (msg, '("Performing dummy calculation")')
         end if
@@ -113,7 +113,7 @@ subroutine qlm_calculate (CCTK_ARGUMENTS)
            call qlm_multipoles_normalise (CCTK_PASS_FTOF, hn)
         end if
 
-        if (output_vtk /= 0) then
+        if (output_vtk_every /= 0) then
           if (mod(cctk_iteration,output_vtk_every) == 0) then
             write(slabel,'(I2.2)'), hn
             write(ilabel,'(I8.8)'), cctk_iteration

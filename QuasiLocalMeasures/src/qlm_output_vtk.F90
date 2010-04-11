@@ -3,8 +3,6 @@
 #include "cctk_Functions.h"
 #include "cctk_Parameters.h"
 
-#include "qlm_variables.h"
-
 subroutine qlm_outputvtk(CCTK_ARGUMENTS,nhor,file_name,unit_nr)
   use cctk
   use constants
@@ -28,11 +26,11 @@ subroutine qlm_outputvtk(CCTK_ARGUMENTS,nhor,file_name,unit_nr)
 
     open (unit=unit_nr, file=file_name,action='write')
     
-    write(unit_nr,400) '# vtk DataFile Version 2.0' 
-    write(unit_nr,400) 'Horizon data' 
-    write(unit_nr,400) 'ASCII' 
-    write(unit_nr,400) 'DATASET POLYDATA'
-    write(unit_nr,500) 'POINTS', nth*nph, 'float'
+    write(unit_nr,'(A)') '# vtk DataFile Version 2.0' 
+    write(unit_nr,'(A)') 'Horizon data' 
+    write(unit_nr,'(A)') 'ASCII' 
+    write(unit_nr,'(A)') 'DATASET POLYDATA'
+    write(unit_nr,'(A,X,I5,X,A)') 'POINTS', nth*nph, 'float'
 
     do j=1, nth
        do i=1, nph
@@ -43,18 +41,18 @@ subroutine qlm_outputvtk(CCTK_ARGUMENTS,nhor,file_name,unit_nr)
        end do
     end do
 
-    write(unit_nr,400) ''
-    write(unit_nr,300) 'POLYGONS', nph*(nth-1), 5*nph*(nth-1)
+    write(unit_nr,'(A)') ''
+    write(unit_nr,'(A,X,I5,X,I10)') 'POLYGONS', nph*(nth-1), 5*nph*(nth-1)
     
     do j=0, nth-2
        do i=0, nph-2
-          write(unit_nr,200) 4, j*nph+i, (j+1)*nph+i, (j+1)*nph+i+1, j*nph+i+1
+          write(unit_nr,'(I1,4(I6))') 4, j*nph+i, (j+1)*nph+i, (j+1)*nph+i+1, j*nph+i+1
        end do
-       write(unit_nr,200) 4, j*nph+nph-1, (j+1)*nph+nph-1, (j+1)*nph+1, j*nph+1
+       write(unit_nr,'(I1,4(I6))') 4, j*nph+nph-1, (j+1)*nph+nph-1, (j+1)*nph+1, j*nph+1
     end do
 
-    write(unit_nr,400) ''
-    write(unit_nr,600) 'POINT_DATA', nth*nph
+    write(unit_nr,'(A)') ''
+    write(unit_nr,'(A,X,I5)') 'POINT_DATA', nth*nph
 
     call qlm_writescalar(CCTK_PASS_FTOF,nth,nph,nhor,'shape',unit_nr)
     call qlm_writescalar(CCTK_PASS_FTOF,nth,nph,nhor,'l0',unit_nr)
@@ -112,13 +110,6 @@ subroutine qlm_outputvtk(CCTK_ARGUMENTS,nhor,file_name,unit_nr)
     call qlm_writescalar(CCTK_PASS_FTOF,nth,nph,nhor,'chi',unit_nr)
 
     close(1)
-
-100 format (3(D1.6,X))
-200 format (I1,4(I6))
-300 format (A,X,I5,X,I10)
-400 format (A)
-500 format (A,X,I5,X,A)
-600 format (A,X,I5)
 
 end subroutine qlm_outputvtk
 
@@ -303,15 +294,12 @@ subroutine qlm_writescalar(CCTK_ARGUMENTS,nth,nph,nhor,array_name,unit_nr)
                                                 qlm_nghostsphi(nhor):nph+qlm_nghostsphi(nhor),nhor)
     end select
 
-    write(unit_nr,700) 'SCALARS', array_name, 'float 1'
-    write(unit_nr,400) 'LOOKUP_TABLE default'
+    write(unit_nr,'(/A,X,A,X,A)') 'SCALARS', array_name, 'float 1'
+    write(unit_nr,'(A)') 'LOOKUP_TABLE default'
     do j=1, nth
        do i=1, nph
           write(unit_nr,*) array(j,i)
        end do
     end do
-
-400 format (A)
-700 format (/A,X,A,X,A)
 
 end subroutine qlm_writescalar

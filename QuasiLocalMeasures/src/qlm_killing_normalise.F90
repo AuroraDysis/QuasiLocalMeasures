@@ -59,7 +59,6 @@ subroutine qlm_killing_normalise (CCTK_ARGUMENTS, hn)
   end do
   if (nsteps < 0) then
      call CCTK_WARN (1, "Did not manage to integrate along a Killing vector field line loop")
-     ! qlm_calc_error(hn) = 1
      qlm_have_killing_vector(hn) = 0
      factor = 1
      goto 9999

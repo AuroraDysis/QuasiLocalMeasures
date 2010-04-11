@@ -9,6 +9,7 @@ subroutine qlm_killing_test (CCTK_ARGUMENTS, hn)
   use cctk
   use qlm_boundary
   use qlm_derivs
+  use qlm_variables
   implicit none
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_FUNCTIONS
@@ -43,12 +44,12 @@ subroutine qlm_killing_test (CCTK_ARGUMENTS, hn)
         qq(2,2) = qlm_qpp(i,j,hn)
         qq(2,1) = qq(1,2)
         
-        dqq(1,1,1) = qlm_dqttt(i,j,hn)
-        dqq(1,2,1) = qlm_dqtpt(i,j,hn)
-        dqq(2,2,1) = qlm_dqppt(i,j,hn)
-        dqq(1,1,2) = qlm_dqttp(i,j,hn)
-        dqq(1,2,2) = qlm_dqtpp(i,j,hn)
-        dqq(2,2,2) = qlm_dqppp(i,j,hn)
+        dqq(1,1,1) = qlm_dqttt(i,j)
+        dqq(1,2,1) = qlm_dqtpt(i,j)
+        dqq(2,2,1) = qlm_dqppt(i,j)
+        dqq(1,1,2) = qlm_dqttp(i,j)
+        dqq(1,2,2) = qlm_dqtpp(i,j)
+        dqq(2,2,2) = qlm_dqppp(i,j)
         dqq(2,1,:) = dqq(1,2,:)
         
         xi(1) = qlm_xi_t(i,j,hn)

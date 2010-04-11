@@ -8,9 +8,9 @@
 subroutine qlm_killing_transport (CCTK_ARGUMENTS, hn)
   use cctk
   use constants
+  use lapack
   use qlm_boundary
   use qlm_killing_transportation
-  use lapack
   implicit none
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_FUNCTIONS

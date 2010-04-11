@@ -109,7 +109,7 @@ COMPLEX qlm_weyl_scalars[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::m
 
 REAL qlm_ricci_scalars[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::maxntheta,SphericalSurface::maxnphi DISTRIB=constant TAGS='Checkpoint="no"' TAGS='convergence_power=1'
 {
-  qlm_phi00 # Ricci tensor, temporarily not available by qlm_weyl_2, change back to qlm_weyl_scalars in qlm_calculate to get them
+  qlm_phi00                     # Ricci tensor
   qlm_phi11
   qlm_phi01
   qlm_phi12
@@ -119,17 +119,15 @@ REAL qlm_ricci_scalars[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::max
   qlm_phi22
   qlm_phi20
   
-  qlm_lambda # Ricci scalar
+  qlm_lambda                    # Ricci scalar
   
-  qlm_lie_n_theta_l # Lie_n Theta_(l)
+  qlm_lie_n_theta_l             # Lie_n Theta_(l)
 } "Ricci scalars"
 
 REAL qlm_twometric[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::maxntheta,SphericalSurface::maxnphi DISTRIB=constant TAGS='Checkpoint="no"' TAGS='convergence_power=1'
 {
   qlm_qtt qlm_qtp qlm_qpp
-  qlm_dqttt qlm_dqtpt qlm_dqppt
-  qlm_dqttp qlm_dqtpp qlm_dqppp
-  qlm_rsc
+  qlm_rsc                       # 2-Ricci scalar
 } "2-metric"
 
 REAL qlm_killing_vector[num_surfaces] TYPE=array DIM=2 SIZE=SphericalSurface::maxntheta,SphericalSurface::maxnphi DISTRIB=constant TAGS='convergence_power=1'

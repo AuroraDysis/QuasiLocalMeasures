@@ -6,25 +6,27 @@ module qlm_variables
   public
   save
   CCTK_REAL, allocatable, dimension(:,:) :: &
-             qlm_gxx, qlm_gxy, qlm_gxz, qlm_gyy, qlm_gyz, qlm_gzz, &
-             qlm_dgxxx, qlm_dgxyx, qlm_dgxzx, qlm_dgyyx, qlm_dgyzx, qlm_dgzzx, &
-             qlm_dgxxy, qlm_dgxyy, qlm_dgxzy, qlm_dgyyy, qlm_dgyzy, qlm_dgzzy, &
-             qlm_dgxxz, qlm_dgxyz, qlm_dgxzz, qlm_dgyyz, qlm_dgyzz, qlm_dgzzz, &
-             qlm_ddgxxxx, qlm_ddgxyxx, qlm_ddgxzxx, qlm_ddgyyxx, qlm_ddgyzxx, qlm_ddgzzxx, &
-             qlm_ddgxxxy, qlm_ddgxyxy, qlm_ddgxzxy, qlm_ddgyyxy, qlm_ddgyzxy, qlm_ddgzzxy, &
-             qlm_ddgxxxz, qlm_ddgxyxz, qlm_ddgxzxz, qlm_ddgyyxz, qlm_ddgyzxz, qlm_ddgzzxz, &
-             qlm_ddgxxyy, qlm_ddgxyyy, qlm_ddgxzyy, qlm_ddgyyyy, qlm_ddgyzyy, qlm_ddgzzyy, &
-             qlm_ddgxxyz, qlm_ddgxyyz, qlm_ddgxzyz, qlm_ddgyyyz, qlm_ddgyzyz, qlm_ddgzzyz, &
-             qlm_ddgxxzz, qlm_ddgxyzz, qlm_ddgxzzz, qlm_ddgyyzz, qlm_ddgyzzz, qlm_ddgzzzz, &
-             qlm_kxx, qlm_kxy, qlm_kxz, qlm_kyy, qlm_kyz, qlm_kzz, &
-             qlm_dkxxx, qlm_dkxyx, qlm_dkxzx, qlm_dkyyx, qlm_dkyzx, qlm_dkzzx, &
-             qlm_dkxxy, qlm_dkxyy, qlm_dkxzy, qlm_dkyyy, qlm_dkyzy, qlm_dkzzy, &
-             qlm_dkxxz, qlm_dkxyz, qlm_dkxzz, qlm_dkyyz, qlm_dkyzz, qlm_dkzzz, &
-             qlm_alpha, &
-             qlm_betax, qlm_betay, qlm_betaz, &
-             qlm_ttt, &
-             qlm_ttx, qlm_tty, qlm_ttz, &
-             qlm_txx, qlm_txy, qlm_txz, qlm_tyy, qlm_tyz, qlm_tzz
+       qlm_gxx, qlm_gxy, qlm_gxz, qlm_gyy, qlm_gyz, qlm_gzz, &
+       qlm_dgxxx, qlm_dgxyx, qlm_dgxzx, qlm_dgyyx, qlm_dgyzx, qlm_dgzzx, &
+       qlm_dgxxy, qlm_dgxyy, qlm_dgxzy, qlm_dgyyy, qlm_dgyzy, qlm_dgzzy, &
+       qlm_dgxxz, qlm_dgxyz, qlm_dgxzz, qlm_dgyyz, qlm_dgyzz, qlm_dgzzz, &
+       qlm_ddgxxxx, qlm_ddgxyxx, qlm_ddgxzxx, qlm_ddgyyxx, qlm_ddgyzxx, qlm_ddgzzxx, &
+       qlm_ddgxxxy, qlm_ddgxyxy, qlm_ddgxzxy, qlm_ddgyyxy, qlm_ddgyzxy, qlm_ddgzzxy, &
+       qlm_ddgxxxz, qlm_ddgxyxz, qlm_ddgxzxz, qlm_ddgyyxz, qlm_ddgyzxz, qlm_ddgzzxz, &
+       qlm_ddgxxyy, qlm_ddgxyyy, qlm_ddgxzyy, qlm_ddgyyyy, qlm_ddgyzyy, qlm_ddgzzyy, &
+       qlm_ddgxxyz, qlm_ddgxyyz, qlm_ddgxzyz, qlm_ddgyyyz, qlm_ddgyzyz, qlm_ddgzzyz, &
+       qlm_ddgxxzz, qlm_ddgxyzz, qlm_ddgxzzz, qlm_ddgyyzz, qlm_ddgyzzz, qlm_ddgzzzz, &
+       qlm_kxx, qlm_kxy, qlm_kxz, qlm_kyy, qlm_kyz, qlm_kzz, &
+       qlm_dkxxx, qlm_dkxyx, qlm_dkxzx, qlm_dkyyx, qlm_dkyzx, qlm_dkzzx, &
+       qlm_dkxxy, qlm_dkxyy, qlm_dkxzy, qlm_dkyyy, qlm_dkyzy, qlm_dkzzy, &
+       qlm_dkxxz, qlm_dkxyz, qlm_dkxzz, qlm_dkyyz, qlm_dkyzz, qlm_dkzzz, &
+       qlm_alpha, &
+       qlm_betax, qlm_betay, qlm_betaz, &
+       qlm_ttt, &
+       qlm_ttx, qlm_tty, qlm_ttz, &
+       qlm_txx, qlm_txy, qlm_txz, qlm_tyy, qlm_tyz, qlm_tzz
+  CCTK_REAL, allocatable, dimension(:,:) :: &
+       qlm_dqttt, qlm_dqtpt, qlm_dqppt, qlm_dqttp, qlm_dqtpp, qlm_dqppp
   
   type tetrad_derivs
      ! nabla_ll(a,b) = D_b l_a
@@ -141,6 +143,13 @@ contains
     allocate(qlm_tyz(ntheta,nphi))
     allocate(qlm_tzz(ntheta,nphi))
     
+    allocate(qlm_dqttt(ntheta,nphi))
+    allocate(qlm_dqtpt(ntheta,nphi))
+    allocate(qlm_dqppt(ntheta,nphi))
+    allocate(qlm_dqttp(ntheta,nphi))
+    allocate(qlm_dqtpp(ntheta,nphi))
+    allocate(qlm_dqppp(ntheta,nphi))
+    
     allocate(qlm_tetrad_derivs(ntheta,nphi))
     
     qlm_gxx = TAT_nan()
@@ -241,6 +250,13 @@ contains
     qlm_tyy = TAT_nan()
     qlm_tyz = TAT_nan()
     qlm_tzz = TAT_nan()
+    
+    qlm_dqttt = TAT_nan()
+    qlm_dqtpt = TAT_nan()
+    qlm_dqppt = TAT_nan()
+    qlm_dqttp = TAT_nan()
+    qlm_dqtpp = TAT_nan()
+    qlm_dqppp = TAT_nan()
     
     tetrad_derivs_nan%nabla_ll = TAT_nan()
     tetrad_derivs_nan%nabla_nn = TAT_nan()
@@ -347,6 +363,13 @@ contains
     deallocate(qlm_tyy)
     deallocate(qlm_tyz)
     deallocate(qlm_tzz)
+    
+    deallocate(qlm_dqttt)
+    deallocate(qlm_dqtpt)
+    deallocate(qlm_dqppt)
+    deallocate(qlm_dqttp)
+    deallocate(qlm_dqtpp)
+    deallocate(qlm_dqppp)
     
     deallocate(qlm_tetrad_derivs)
   end subroutine deallocate_variables

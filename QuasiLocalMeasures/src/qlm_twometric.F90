@@ -116,12 +116,12 @@ subroutine qlm_calc_twometric (CCTK_ARGUMENTS, hn)
         qlm_qtp(i,j,hn) = qq(1,2)
         qlm_qpp(i,j,hn) = qq(2,2)
         
-        qlm_dqttt(i,j,hn) = dqq(1,1,1)
-        qlm_dqtpt(i,j,hn) = dqq(1,2,1)
-        qlm_dqppt(i,j,hn) = dqq(2,2,1)
-        qlm_dqttp(i,j,hn) = dqq(1,1,2)
-        qlm_dqtpp(i,j,hn) = dqq(1,2,2)
-        qlm_dqppp(i,j,hn) = dqq(2,2,2)
+        qlm_dqttt(i,j) = dqq(1,1,1)
+        qlm_dqtpt(i,j) = dqq(1,2,1)
+        qlm_dqppt(i,j) = dqq(2,2,1)
+        qlm_dqttp(i,j) = dqq(1,1,2)
+        qlm_dqtpp(i,j) = dqq(1,2,2)
+        qlm_dqppp(i,j) = dqq(2,2,2)
         
      end do
   end do
@@ -130,11 +130,11 @@ subroutine qlm_calc_twometric (CCTK_ARGUMENTS, hn)
   call set_boundary (CCTK_PASS_FTOF, hn, qlm_qtp(:,:,hn), +1)
   call set_boundary (CCTK_PASS_FTOF, hn, qlm_qpp(:,:,hn), +1)
   
-  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqttt(:,:,hn), -1)
-  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqtpt(:,:,hn), -1)
-  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqppt(:,:,hn), -1)
-  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqttp(:,:,hn), -1)
-  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqtpp(:,:,hn), -1)
-  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqppp(:,:,hn), -1)
+  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqttt(:,:), -1)
+  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqtpt(:,:), -1)
+  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqppt(:,:), -1)
+  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqttp(:,:), -1)
+  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqtpp(:,:), -1)
+  call set_boundary (CCTK_PASS_FTOF, hn, qlm_dqppp(:,:), -1)
   
 end subroutine qlm_calc_twometric

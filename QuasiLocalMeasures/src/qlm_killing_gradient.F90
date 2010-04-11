@@ -38,12 +38,12 @@ subroutine qlm_killing_gradient (CCTK_ARGUMENTS, hn)
         qq(2,1) = qq(1,2)
         
 #if 0
-        dqq(1,1,1) = qlm_dqttt(i,j,hn)
-        dqq(1,1,2) = qlm_dqttp(i,j,hn)
-        dqq(1,2,1) = qlm_dqtpt(i,j,hn)
-        dqq(1,2,2) = qlm_dqtpp(i,j,hn)
-        dqq(2,2,1) = qlm_dqppt(i,j,hn)
-        dqq(2,2,2) = qlm_dqppp(i,j,hn)
+        dqq(1,1,1) = qlm_dqttt(i,j)
+        dqq(1,1,2) = qlm_dqttp(i,j)
+        dqq(1,2,1) = qlm_dqtpt(i,j)
+        dqq(1,2,2) = qlm_dqtpp(i,j)
+        dqq(2,2,1) = qlm_dqppt(i,j)
+        dqq(2,2,2) = qlm_dqppp(i,j)
         dqq(2,1,:) = dqq(1,2,:)
 #endif
         
