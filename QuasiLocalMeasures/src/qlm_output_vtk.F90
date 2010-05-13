@@ -48,7 +48,7 @@ subroutine qlm_outputvtk(CCTK_ARGUMENTS,nhor,file_name,unit_nr)
        do i=0, nph-2
           write(unit_nr,'(I1,4(I6))') 4, j*nph+i, (j+1)*nph+i, (j+1)*nph+i+1, j*nph+i+1
        end do
-       write(unit_nr,'(I1,4(I6))') 4, j*nph+nph-1, (j+1)*nph+nph-1, (j+1)*nph+1, j*nph+1
+       write(unit_nr,'(I1,4(I6))') 4, j*nph+nph-1, (j+1)*nph+nph-1, (j+1)*nph, j*nph
     end do
 
     write(unit_nr,'(A)') ''
