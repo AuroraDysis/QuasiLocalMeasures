@@ -39,6 +39,8 @@ Carpet::domain_from_coordbase = yes
 driver::ghost_size            = 3
 Carpet::init_3_timelevels     = yes
 
+Carpet::prolongation_order_time = 2
+
 Carpet::poison_new_timelevels = yes
 CarpetLib::poison_new_memory  = yes
 
