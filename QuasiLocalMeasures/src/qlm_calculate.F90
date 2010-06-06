@@ -115,8 +115,8 @@ subroutine qlm_calculate (CCTK_ARGUMENTS)
 
         if (output_vtk_every /= 0) then
           if (mod(cctk_iteration,output_vtk_every) == 0) then
-            write(slabel,'(I2.2)'), hn
-            write(ilabel,'(I8.8)'), cctk_iteration
+            write(slabel,'(I2.2)') hn
+            write(ilabel,'(I8.8)') cctk_iteration
             call CCTK_ParameterValString (nchars, "out_dir", "IOUtil", odir) 
             call qlm_outputvtk (CCTK_PASS_FTOF, hn, odir(1:nchars)//'/surface'//slabel//'_'//ilabel//'.vtk', 1)
           end if
