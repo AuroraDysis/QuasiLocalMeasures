@@ -29,7 +29,7 @@ subroutine qlm_multipoles (CCTK_ARGUMENTS, hn)
 !!$  CCTK_REAL    :: kk(3,3)
 !!$  CCTK_REAL    :: ll(0:3), nn(0:3), ss(0:3)
   CCTK_COMPLEX :: psi2
-  CCTK_REAL    :: zz, dzz(2)
+  CCTK_REAL    :: zz
   CCTK_REAL    :: area, mass, spin
   
   CCTK_REAL    :: delta_space(2)
@@ -105,33 +105,31 @@ subroutine qlm_multipoles (CCTK_ARGUMENTS, hn)
         
         zz = qlm_inv_z(i,j,hn)
         
-        dzz(:) = deriv (qlm_inv_z(:,:,hn), i, j, delta_space)
-        
         area = sqrt(dtq) * qlm_delta_theta(hn) * qlm_delta_phi(hn)
         
         mass = fourth * rsc
         
-        qlm_mp_m0(hn) = qlm_mp_m0(hn) + mass * p0(zz) * dzz(1) * area
-        qlm_mp_m1(hn) = qlm_mp_m1(hn) + mass * p1(zz) * dzz(1) * area
-        qlm_mp_m2(hn) = qlm_mp_m2(hn) + mass * p2(zz) * dzz(1) * area
-        qlm_mp_m3(hn) = qlm_mp_m3(hn) + mass * p3(zz) * dzz(1) * area
-        qlm_mp_m4(hn) = qlm_mp_m4(hn) + mass * p4(zz) * dzz(1) * area
-        qlm_mp_m5(hn) = qlm_mp_m5(hn) + mass * p5(zz) * dzz(1) * area
-        qlm_mp_m6(hn) = qlm_mp_m6(hn) + mass * p6(zz) * dzz(1) * area
-        qlm_mp_m7(hn) = qlm_mp_m7(hn) + mass * p7(zz) * dzz(1) * area
-        qlm_mp_m8(hn) = qlm_mp_m8(hn) + mass * p8(zz) * dzz(1) * area
+        qlm_mp_m0(hn) = qlm_mp_m0(hn) + mass * p0(zz) * area
+        qlm_mp_m1(hn) = qlm_mp_m1(hn) + mass * p1(zz) * area
+        qlm_mp_m2(hn) = qlm_mp_m2(hn) + mass * p2(zz) * area
+        qlm_mp_m3(hn) = qlm_mp_m3(hn) + mass * p3(zz) * area
+        qlm_mp_m4(hn) = qlm_mp_m4(hn) + mass * p4(zz) * area
+        qlm_mp_m5(hn) = qlm_mp_m5(hn) + mass * p5(zz) * area
+        qlm_mp_m6(hn) = qlm_mp_m6(hn) + mass * p6(zz) * area
+        qlm_mp_m7(hn) = qlm_mp_m7(hn) + mass * p7(zz) * area
+        qlm_mp_m8(hn) = qlm_mp_m8(hn) + mass * p8(zz) * area
         
-        spin = - aimag(psi2)
+        spin = - aimag(psi2) * cos(theta)
         
-        qlm_mp_j0(hn) = qlm_mp_j0(hn) + spin * p0(zz) * dzz(1) * area
-        qlm_mp_j1(hn) = qlm_mp_j1(hn) + spin * p1(zz) * dzz(1) * area
-        qlm_mp_j2(hn) = qlm_mp_j2(hn) + spin * p2(zz) * dzz(1) * area
-        qlm_mp_j3(hn) = qlm_mp_j3(hn) + spin * p3(zz) * dzz(1) * area
-        qlm_mp_j4(hn) = qlm_mp_j4(hn) + spin * p4(zz) * dzz(1) * area
-        qlm_mp_j5(hn) = qlm_mp_j5(hn) + spin * p5(zz) * dzz(1) * area
-        qlm_mp_j6(hn) = qlm_mp_j6(hn) + spin * p6(zz) * dzz(1) * area
-        qlm_mp_j7(hn) = qlm_mp_j7(hn) + spin * p7(zz) * dzz(1) * area
-        qlm_mp_j8(hn) = qlm_mp_j8(hn) + spin * p8(zz) * dzz(1) * area
+        qlm_mp_j0(hn) = qlm_mp_j0(hn) + spin * p0(zz) * area
+        qlm_mp_j1(hn) = qlm_mp_j1(hn) + spin * p1(zz) * area
+        qlm_mp_j2(hn) = qlm_mp_j2(hn) + spin * p2(zz) * area
+        qlm_mp_j3(hn) = qlm_mp_j3(hn) + spin * p3(zz) * area
+        qlm_mp_j4(hn) = qlm_mp_j4(hn) + spin * p4(zz) * area
+        qlm_mp_j5(hn) = qlm_mp_j5(hn) + spin * p5(zz) * area
+        qlm_mp_j6(hn) = qlm_mp_j6(hn) + spin * p6(zz) * area
+        qlm_mp_j7(hn) = qlm_mp_j7(hn) + spin * p7(zz) * area
+        qlm_mp_j8(hn) = qlm_mp_j8(hn) + spin * p8(zz) * area
         
 !!$        spin = 0
 !!$        do a=1,2
