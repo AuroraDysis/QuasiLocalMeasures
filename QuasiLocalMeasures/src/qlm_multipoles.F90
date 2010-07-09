@@ -35,6 +35,7 @@ subroutine qlm_multipoles (CCTK_ARGUMENTS, hn)
   CCTK_REAL    :: delta_space(2)
   
   integer      :: i, j
+  CCTK_REAL    :: theta
 !!$  integer      :: a, b, c, d
   
   if (veryverbose/=0) then
@@ -65,6 +66,7 @@ subroutine qlm_multipoles (CCTK_ARGUMENTS, hn)
   
   do j = 1+qlm_nghostsphi(hn), qlm_nphi(hn)-qlm_nghostsphi(hn)
      do i = 1+qlm_nghoststheta(hn), qlm_ntheta(hn)-qlm_nghoststheta(hn)
+        theta = qlm_origin_theta(hn) + (i-1)*qlm_delta_theta(hn)
         
         ! 2-metric on the horizon
         qq(1,1) = qlm_qtt(i,j,hn)
