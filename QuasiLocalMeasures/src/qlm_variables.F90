@@ -28,6 +28,9 @@ module qlm_variables
   CCTK_REAL, allocatable, dimension(:,:) :: &
        qlm_dqttt, qlm_dqtpt, qlm_dqppt, qlm_dqttp, qlm_dqtpp, qlm_dqppp
   
+  CCTK_REAL, allocatable, dimension(:,:) :: &
+       qlm_spin_density
+  
   type tetrad_derivs
      ! nabla_ll(a,b) = D_b l_a
      CCTK_REAL    :: nabla_ll(0:3,0:3)
@@ -152,6 +155,8 @@ contains
     
     allocate(qlm_tetrad_derivs(ntheta,nphi))
     
+    allocate(qlm_spin_density(ntheta,nphi))
+    
     qlm_gxx = TAT_nan()
     qlm_gxy = TAT_nan()
     qlm_gxz = TAT_nan()
@@ -262,6 +267,8 @@ contains
     tetrad_derivs_nan%nabla_nn = TAT_nan()
     tetrad_derivs_nan%nabla_mm = cmplx(TAT_nan(),TAT_nan(),rk)
     qlm_tetrad_derivs = tetrad_derivs_nan
+
+    qlm_spin_density = TAT_nan()
   end subroutine allocate_variables
 
   subroutine deallocate_variables
@@ -372,6 +379,8 @@ contains
     deallocate(qlm_dqppp)
     
     deallocate(qlm_tetrad_derivs)
+
+    deallocate(qlm_spin_density)
   end subroutine deallocate_variables
 
 end module qlm_variables

@@ -105,11 +105,11 @@ subroutine qlm_calculate (CCTK_ARGUMENTS)
         if (qlm_have_killing_vector(hn) /= 0) then
            call qlm_killing_test (CCTK_PASS_FTOF, hn)
            call qlm_calc_coordinates (CCTK_PASS_FTOF, hn)
-           call qlm_multipoles (CCTK_PASS_FTOF, hn)
         end if
         call qlm_calc_3determinant (CCTK_PASS_FTOF, hn)
         call qlm_analyse (CCTK_PASS_FTOF, hn)
         if (qlm_have_killing_vector(hn) /= 0) then
+           call qlm_multipoles (CCTK_PASS_FTOF, hn)
            call qlm_multipoles_normalise (CCTK_PASS_FTOF, hn)
         end if
 

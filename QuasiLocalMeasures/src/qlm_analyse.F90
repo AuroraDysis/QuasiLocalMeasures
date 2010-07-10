@@ -273,6 +273,7 @@ subroutine qlm_analyse (CCTK_ARGUMENTS, hn)
               spin = spin + xi1(a) * ss(b) * kk(a,b)
            end do
         end do
+        qlm_spin_density(i,j) = spin
         
         ! phi^i omega_i = (alpha + ~beta) phi^i m_i + complex conjugate
         npspin = 0
