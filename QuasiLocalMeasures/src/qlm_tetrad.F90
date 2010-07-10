@@ -28,6 +28,7 @@ subroutine qlm_calc_tetrad (CCTK_ARGUMENTS, hn)
   CCTK_REAL, parameter :: gg4(0:3,0:3,0:3) = 0
   CCTK_REAL    :: gg(3,3), dgg(3,3,3), gg_dot(3,3)
   CCTK_REAL    :: kk(3,3)
+  CCTK_REAL    :: alfa, beta(3)
   CCTK_REAL    :: g4(0:3,0:3), gu4(0:3,0:3), dg4(0:3,0:3,0:3)
   CCTK_REAL    :: gamma4(0:3,0:3,0:3)
   CCTK_REAL    :: ee(0:3,0:3), ee_p(0:3,1:3), ee_p_p(0:3,1:3)
@@ -127,6 +128,12 @@ subroutine qlm_calc_tetrad (CCTK_ARGUMENTS, hn)
         kk(3,1) = kk(1,3)
         kk(3,2) = kk(2,3)
         
+        alfa = qlm_alpha(i,j)
+        
+        beta(1) = qlm_betax(i,j)
+        beta(2) = qlm_betay(i,j)
+        beta(3) = qlm_betaz(i,j)
+        
         
         
         ! Calculate 4-metric
@@ -137,13 +144,15 @@ subroutine qlm_calc_tetrad (CCTK_ARGUMENTS, hn)
         
         
         
-        ! The following must be consistent with qlm_tetrad.F90
-        
         ee = TAT_nan()
         dee_spher = TAT_nan()
         dee = TAT_nan()
         
-        ee(0,:) = 0
+        
+        
+        ! Calculate the future timelike unit normal vector
+        ! t^2 = -1
+        ee(0,:) = (/ one, -beta /) / alfa
         dee(0,:,:) = 0
         
         
