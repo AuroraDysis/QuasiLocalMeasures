@@ -220,7 +220,7 @@ contains
   function dp5 (z)
     CCTK_REAL, intent(in) :: z
     CCTK_REAL             :: dp5
-    dp5 = 315*eighth * z**4 - 105*fourth * z**2 - 15*eighth
+    dp5 = 315*eighth * z**4 - 105*fourth * z**2 + 15*eighth
   end function dp5
   
   function dp6 (z)
