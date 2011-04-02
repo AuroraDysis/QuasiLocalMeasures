@@ -215,6 +215,8 @@ ActiveThorns = "ML_ADMConstraints"
 ActiveThorns = "AHFinderDirect"
 
 AHFinderDirect::find_every = 1
+AHFinderDirect::run_at_CCTK_ANALYSIS = true
+AHFinderDirect::run_at_CCTK_POSTSTEP = false
 
 AHFinderDirect::geometry_interpolator_name = "Lagrange polynomial interpolation"
 AHFinderDirect::geometry_interpolator_pars = "order=4"
