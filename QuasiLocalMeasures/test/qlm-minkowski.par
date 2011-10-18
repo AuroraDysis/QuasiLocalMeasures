@@ -189,9 +189,6 @@ IOScalar::outScalar_vars       = "
         QuasiLocalMeasures::qlm_coordinates
         QuasiLocalMeasures::qlm_tetrad_l
         QuasiLocalMeasures::qlm_tetrad_n
-        QuasiLocalMeasures::qlm_tetrad_m
-        QuasiLocalMeasures::qlm_newman_penrose
-        QuasiLocalMeasures::qlm_weyl_scalars
         QuasiLocalMeasures::qlm_ricci_scalars
         QuasiLocalMeasures::qlm_twometric
         QuasiLocalMeasures::qlm_killing_vector
