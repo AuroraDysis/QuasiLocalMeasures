@@ -23,6 +23,12 @@ INT surface_index[100] "Spherical surface that contains the surface shape"
   0:* :: "surface index"
 } -1
 
+STRING surface_name[100] "Spherical surface that contains the surface shape"
+{
+  ""   :: "use surface_index"
+  ".*" :: "surface name"
+} ""
+
 STRING coordsystem "The coordinate system to use" STEERABLE=always
 {
   "" :: "must be a registered coordinate system"

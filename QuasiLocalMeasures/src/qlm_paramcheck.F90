@@ -22,18 +22,19 @@ subroutine qlm_paramcheck (CCTK_ARGUMENTS)
   
   do hn = 1, num_surfaces
      
-     if (surface_index(hn) == -1) then
+     if (surface_index(hn) == -1 .and. CCTK_EQUALS(surface_name(hn),"")) then
         ! no surface selected; everything is fine
         goto 9999
      end if
      
-     if (surface_index(hn) < 0 .or. surface_index(hn) >= nsurfaces) then
+     if ((surface_index(hn) < 0 .or. surface_index(hn) >= nsurfaces) .and. &
+         CCTK_EQUALS(surface_name(hn), "")) then
         write (msg, '("Illegal surface index specified for surface ",i4," (index is ",i4,", must be less than ",i4,")")') hn-1, surface_index(hn), nsurfaces
         call CCTK_PARAMWARN (msg)
         goto 9999
      end if
      
-     sn = surface_index(hn) + 1
+     sn = sf_IdFromName(surface_index(hn), surface_name(hn)) + 1
      
      ! Import surface description
      qlm_nghoststheta(hn) = nghoststheta(sn)

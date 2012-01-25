@@ -55,7 +55,7 @@ subroutine qlm_calculate (CCTK_ARGUMENTS)
      end if
      
      if (hn > 0) then
-        if (surface_index(hn) == -1) then
+        if (surface_index(hn) == -1 .and. CCTK_EQUALS(surface_name(hn), "")) then
            qlm_calc_error(hn) = 1
            qlm_have_valid_data(hn) = 0
            qlm_have_killing_vector(hn) = 0

@@ -21,17 +21,18 @@ subroutine qlm_import_surface (CCTK_ARGUMENTS, hn)
      call CCTK_INFO ("Importing surface shape")
   end if
   
-  if (surface_index(hn) < 0 .or. surface_index(hn) >= nsurfaces) then
+  if ((surface_index(hn) < 0 .or. surface_index(hn) >= nsurfaces) .and. &
+      CCTK_EQUALS(surface_name(hn), "")) then
      call CCTK_WARN (0, "Illegal spherical surface index specified")
   end if
   
+  sn = sf_IdFromName(surface_index(hn), surface_name(hn)) + 1
+  
   if (verbose/=0 .or. veryverbose/=0) then
-     write (msg, '("Importing from spherical surface ",i4)') surface_index(hn)
+     write (msg, '("Importing from spherical surface ",a," ",i4)') &
+           surface_name(hn), sn - 1
      call CCTK_INFO (msg)
   end if
-  
-  sn = surface_index(hn) + 1
-  
   
   
   if (qlm_calc_error(hn) == 0 .and. cctk_iteration > qlm_iteration(hn)) then

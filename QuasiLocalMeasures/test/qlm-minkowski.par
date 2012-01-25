@@ -95,6 +95,7 @@ SphericalSurface::nsurfaces = 1
 SphericalSurface::maxntheta = 39
 SphericalSurface::maxnphi   = 76
 
+SphericalSurface::name        [0] = "Apparent Horizon"
 SphericalSurface::ntheta      [0] = 39
 SphericalSurface::nphi        [0] = 76
 SphericalSurface::nghoststheta[0] = 2
@@ -155,7 +156,7 @@ QuasiLocalMeasures::verbose              = yes
 QuasiLocalMeasures::interpolator         = "Lagrange polynomial interpolation"
 QuasiLocalMeasures::interpolator_options = "order=4"
 QuasiLocalMeasures::spatial_order        = 4
-QuasiLocalMeasures::surface_index[0]     = 0
+QuasiLocalMeasures::surface_name[0]      = "Apparent Horizon"
 
 
 

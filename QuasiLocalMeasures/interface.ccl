@@ -10,6 +10,11 @@ CCTK_POINTER_TO_CONST \
 FUNCTION GetMPICommWorld (CCTK_POINTER_TO_CONST IN cctkGH)
 USES FUNCTION GetMPICommWorld
 
+# translate SphericalSurface name into ID
+CCTK_INT \
+FUNCTION sf_IdFromName (CCTK_INT IN id, CCTK_POINTER_TO_CONST IN name)
+USES FUNCTION sf_IdFromName
+
 
 
 INT qlm_state[num_surfaces] TYPE=scalar
