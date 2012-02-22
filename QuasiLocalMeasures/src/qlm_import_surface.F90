@@ -14,8 +14,8 @@ subroutine qlm_import_surface (CCTK_ARGUMENTS, hn)
   DECLARE_CCTK_PARAMETERS
   integer :: hn
   
-  integer   :: i, j, sn
-  character :: msg*1000
+  integer   :: i, j, sn, sname_length
+  character :: msg*1000, sname*200
   
   if (veryverbose/=0) then
      call CCTK_INFO ("Importing surface shape")
@@ -29,8 +29,10 @@ subroutine qlm_import_surface (CCTK_ARGUMENTS, hn)
   sn = sf_IdFromName(surface_index(hn), surface_name(hn)) + 1
   
   if (verbose/=0 .or. veryverbose/=0) then
-     write (msg, '("Importing from spherical surface ",a," ",i4)') &
-           surface_name(hn), sn - 1
+     call CCTK_FortranString(sname_length, surface_name(hn), sname)
+     ! no error checking since FortranString's truncation is sufficient
+     write (msg, '("Importing from spherical surface ",i4," ",a)') &
+           sn - 1, TRIM(sname)
      call CCTK_INFO (msg)
   end if
   
