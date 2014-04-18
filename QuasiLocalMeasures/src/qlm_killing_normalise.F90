@@ -23,7 +23,7 @@ subroutine qlm_killing_normalise (CCTK_ARGUMENTS, hn)
   logical   :: found(ngeodesics)
   
   integer   :: nsteps
-  integer   :: ii, iii
+  integer   :: ii
   integer   :: i, j
   
   character :: msg*1000
@@ -41,29 +41,6 @@ subroutine qlm_killing_normalise (CCTK_ARGUMENTS, hn)
   
   if (veryverbose/=0) call CCTK_INFO ("Calculating normalisation factor:")
   
-#if 0
-  nsteps = -1
-  do iii=1,ngeodesics
-     ii = (ngeodesics/2+1) + (2*mod(iii,2)-1) * (iii/2)
-     if (ii<1 .or. ii>ngeodesics) call CCTK_WARN (0, "internal error")
-     i = 1 + qlm_nghoststheta(hn) &
-          + ii * (qlm_ntheta(hn) - 2*qlm_nghoststheta(hn) - 1) / (ngeodesics+1)
-     if (qlm_xi_p(i,j,hn) < 0) then
-        qlm_xi_t(:,:,hn) = -qlm_xi_t(:,:,hn)
-        qlm_xi_p(:,:,hn) = -qlm_xi_p(:,:,hn)
-        qlm_chi (:,:,hn) = -qlm_chi (:,:,hn)
-     end if
-     theta = qlm_origin_theta(hn) + (i-1) * qlm_delta_theta(hn)
-     call killing_factor (CCTK_PASS_FTOF, hn, theta, factor, nsteps)
-     if (nsteps>0) exit
-  end do
-  if (nsteps < 0) then
-     call CCTK_WARN (1, "Did not manage to integrate along a Killing vector field line loop")
-     qlm_have_killing_vector(hn) = 0
-     factor = 1
-     goto 9999
-  end if
-#else
   do ii=1,ngeodesics
      i = 1 + qlm_nghoststheta(hn) &
           + ii * (qlm_ntheta(hn) - 2*qlm_nghoststheta(hn) - 1) / (ngeodesics+1)
@@ -109,7 +86,6 @@ subroutine qlm_killing_normalise (CCTK_ARGUMENTS, hn)
      factor = 1
      goto 9999
   end if
-#endif
   
   
   
