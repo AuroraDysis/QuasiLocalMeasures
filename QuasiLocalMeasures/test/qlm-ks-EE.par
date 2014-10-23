@@ -184,6 +184,7 @@ IOScalar::one_file_per_group = yes
 
 IOScalar::outScalar_every      = 1
 IOScalar::outScalar_reductions = "average count maximum minimum norm1 norm2 norm_inf"
+IOScalar::out_group_separator  = "-"
 IOScalar::outScalar_vars       = "
         CarpetReduce::weight
         ADMBase::metric
@@ -207,7 +208,8 @@ IOScalar::outScalar_vars       = "
 
 ActiveThorns = "CarpetIOASCII"
 
-IOASCII::one_file_per_group = yes
+IOASCII::one_file_per_group  = yes
+IOASCII::out_group_separator = "-"
 
 IOASCII::out0D_every = 1
 IOASCII::out0D_vars  = "
