@@ -24,15 +24,17 @@ subroutine qlm_killing_transport (CCTK_ARGUMENTS, hn)
      end function TAT_isnan
   end interface
   
-  CCTK_REAL :: xi(2,3), chi(3)
-  CCTK_REAL :: vec(3,3)
-  CCTK_REAL :: wr(3), wi(3), vl(3,3), vr(3,3)
-  integer   :: i0, j0
-  integer   :: n
-  integer   :: info
-  character :: msg*1000
+  integer, parameter :: lik = lapack_integer_kind
+
+  CCTK_REAL    :: xi(2,3), chi(3)
+  CCTK_REAL    :: vec(3,3)
+  CCTK_REAL    :: wr(3), wi(3), vl(3,3), vr(3,3)
+  integer      :: i0, j0
+  integer      :: n
+  integer(lik) :: info
+  character    :: msg*1000
   
-  integer, parameter :: lwork = 100
+  integer(lik), parameter :: lwork = 100
   CCTK_REAL :: work(lwork)
   
   
@@ -87,7 +89,8 @@ subroutine qlm_killing_transport (CCTK_ARGUMENTS, hn)
      goto 9999
   end if
   
-  call geev ('n', 'v', 3, vec, 3, wr, wi, vl, 3, vr, 3, work, lwork, info)
+  call geev ('n', 'v', 3_lik, vec, 3_lik, wr, wi, vl, 3_lik, vr, 3_lik, &
+       work, lwork, info)
   if (info/=0) then
      ! qlm_calc_error(hn) = 1
      qlm_have_killing_vector(hn) = 0

@@ -56,8 +56,15 @@ bcast (cGH const * restrict const cctkGH,
   switch (data.vartype)
   {
   case CCTK_VARIABLE_INT:
-    assert (sizeof (CCTK_INT) == sizeof (int));
-    mpitype = MPI_INT;
+    if (sizeof (CCTK_INT) == sizeof (int)) {
+      mpitype = MPI_INT;
+    } else if (sizeof (CCTK_INT) == sizeof (long)) {
+      mpitype = MPI_LONG;
+    } else if (sizeof (CCTK_INT) == sizeof (long long)) {
+      mpitype = MPI_LONG_LONG;
+    } else {
+      CCTK_ERROR("Unsupported CCTK_INT type");
+    }
     items = 1;
     break;
   case CCTK_VARIABLE_REAL:
