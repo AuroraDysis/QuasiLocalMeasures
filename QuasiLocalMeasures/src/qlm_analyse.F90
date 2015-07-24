@@ -35,7 +35,7 @@ subroutine qlm_analyse (CCTK_ARGUMENTS, hn)
   CCTK_REAL    :: xi(2), xi1(3)
   CCTK_REAL    :: qq(2,2), dtq
   CCTK_REAL    :: adm_energy, adm_mom(3), adm_amom(3)
-  CCTK_REAL    :: ll_energy, ll_mom(3), ll_amom(3,3)
+  CCTK_REAL    :: w_energy, w_mom(3), w_amom(3,3)
   CCTK_COMPLEX :: ev
   CCTK_REAL    :: spin
   CCTK_REAL    :: npspin
@@ -96,13 +96,13 @@ subroutine qlm_analyse (CCTK_ARGUMENTS, hn)
   qlm_adm_angular_momentum_y(hn) = 0
   qlm_adm_angular_momentum_z(hn) = 0
 
-  qlm_ll_energy(hn) = 0
-  qlm_ll_momentum_x(hn) = 0
-  qlm_ll_momentum_y(hn) = 0
-  qlm_ll_momentum_z(hn) = 0
-  qlm_ll_angular_momentum_x(hn) = 0
-  qlm_ll_angular_momentum_y(hn) = 0
-  qlm_ll_angular_momentum_z(hn) = 0
+  qlm_w_energy(hn) = 0
+  qlm_w_momentum_x(hn) = 0
+  qlm_w_momentum_y(hn) = 0
+  qlm_w_momentum_z(hn) = 0
+  qlm_w_angular_momentum_x(hn) = 0
+  qlm_w_angular_momentum_y(hn) = 0
+  qlm_w_angular_momentum_z(hn) = 0
 
   ! Compute weights for spherical integration (see Driscoll and Healy).
   ! These are the correct weights in a Gauss-Legendre-Senc.
@@ -399,69 +399,69 @@ subroutine qlm_analyse (CCTK_ARGUMENTS, hn)
              & + adm_amom(3) / (8*pi) &
              &   * sqrt(dtq) * qlm_delta_theta(hn) * qlm_delta_phi(hn)
 
-        ! Landau-Lifshitz quantities
+        ! Weinberg pseudotensor quantities
         ! Weinberg, chapter 7.6, pp. 165 ff, eqns. (7.6.22) - (7.6.24):
         
-        ! Landau-Lifshitz energy
-        ! E_ll = (-1/16 pi) int_S(r) [h_jj,i - hij,j] n_i r^2 dOmega
-        ll_energy = 0
+        ! Weinberg energy
+        ! E_w = (-1/16 pi) int_S(r) [h_jj,i - hij,j] n_i r^2 dOmega
+        w_energy = 0
         do a=1,3
            do b=1,3
-              ll_energy = ll_energy + (dh4(b,b,a) - dh4(a,b,b)) * ss(a)
+              w_energy = w_energy + (dh4(b,b,a) - dh4(a,b,b)) * ss(a)
            end do
         end do
-        qlm_ll_energy(hn) = qlm_ll_energy(hn) &
-             & + ll_energy / (-16*pi) &
+        qlm_w_energy(hn) = qlm_w_energy(hn) &
+             & + w_energy / (-16*pi) &
              &   * sqrt(dtq) * weights(i)
         
-        ! Landau-Lifshitz momentum
+        ! Weinberg momentum
         ! P_ll^j = (-1/16 pi) int_S(r)
         !    [- h_kk,0 delta_ij + h_k0,k delta_ij
         !     - h_j0,i + h_ij,0                  ] n_i r^2 dOmega
         ! 
         ! P_ll^j = (1/8 pi) int_S(r) [K_ij - K delta_ij] n_i r^2 dOmega
         do a=1,3
-           ll_mom(a) = 0
+           w_mom(a) = 0
            do b=1,3
-              ll_mom(a) = ll_mom(a) &
+              w_mom(a) = w_mom(a) &
                    + (- dh4(b,b,0) + dh4(b,0,b)) * ss(a) &
                    + (- dh4(a,0,b) + dh4(b,a,0)) * ss(b)
            end do
         end do
-        qlm_ll_momentum_x(hn) = qlm_ll_momentum_x(hn) &
-             & + ll_mom(1) / (-16*pi) &
+        qlm_w_momentum_x(hn) = qlm_w_momentum_x(hn) &
+             & + w_mom(1) / (-16*pi) &
              &   * sqrt(dtq) * weights(i)
-        qlm_ll_momentum_y(hn) = qlm_ll_momentum_y(hn) &
-             & + ll_mom(2) / (-16*pi) &
+        qlm_w_momentum_y(hn) = qlm_w_momentum_y(hn) &
+             & + w_mom(2) / (-16*pi) &
              &   * sqrt(dtq) * weights(i)
-        qlm_ll_momentum_z(hn) = qlm_ll_momentum_z(hn) &
-             & + ll_mom(3) / (-16*pi) &
+        qlm_w_momentum_z(hn) = qlm_w_momentum_z(hn) &
+             & + w_mom(3) / (-16*pi) &
              &   * sqrt(dtq) * weights(i)
         
-        ! Landau-Lifshitz angular momentum
+        ! Weinberg angular momentum
         ! J_ll^jk = (-1/16 pi) int_S(r)
         !    [- x_j h_0k,i + x_k h_0j,i
         !     + x_j h_ki,0 - x_k h_ji,0
         !     + h_0k delta_ij - h_0j delta_ik] n_i r^2 dOmega
         do a=1,3
            do b=1,3
-              ll_amom(a,b) = 0
+              w_amom(a,b) = 0
               do c=1,3
-                 ll_amom(a,b) = ll_amom(a,b) + ss(c) * ( &
+                 w_amom(a,b) = w_amom(a,b) + ss(c) * ( &
                       + (- xx(a) * dh4(0,b,c) + xx(b) * dh4(0,a,c)) &
                       + (+ xx(a) * dh4(b,c,0) - xx(b) * dh4(a,c,0)) &
                       + (h4(0,b) * delta4(c,a) - h4(0,a) * delta4(c,b)))
               end do
            end do
         end do
-        qlm_ll_angular_momentum_x(hn) = qlm_ll_angular_momentum_x(hn) &
-             & + ll_amom(2,3) / (-16*pi) &
+        qlm_w_angular_momentum_x(hn) = qlm_w_angular_momentum_x(hn) &
+             & + w_amom(2,3) / (-16*pi) &
              &   * sqrt(dtq) * weights(i)
-        qlm_ll_angular_momentum_y(hn) = qlm_ll_angular_momentum_y(hn) &
-             & + ll_amom(3,1) / (-16*pi) &
+        qlm_w_angular_momentum_y(hn) = qlm_w_angular_momentum_y(hn) &
+             & + w_amom(3,1) / (-16*pi) &
              &   * sqrt(dtq) * weights(i)
-        qlm_ll_angular_momentum_z(hn) = qlm_ll_angular_momentum_z(hn) &
-             & + ll_amom(1,2) / (-16*pi) &
+        qlm_w_angular_momentum_z(hn) = qlm_w_angular_momentum_z(hn) &
+             & + w_amom(1,2) / (-16*pi) &
              &   * sqrt(dtq) * weights(i)
         
      end do
@@ -565,19 +565,19 @@ subroutine qlm_analyse (CCTK_ARGUMENTS, hn)
      call CCTK_INFO (msg)
      write (msg, '("   ADM angular momentum z: ",g16.6)') qlm_adm_angular_momentum_z(hn)
      call CCTK_INFO (msg)
-     write (msg, '("   Landau-Lifshitz energy:             ",g16.6)') qlm_ll_energy(hn)
+     write (msg, '("   Weinberg energy:             ",g16.6)') qlm_w_energy(hn)
      call CCTK_INFO (msg)
-     write (msg, '("   Landau-Lifshitz momentum x:         ",g16.6)') qlm_ll_momentum_x(hn)
+     write (msg, '("   Weinberg momentum x:         ",g16.6)') qlm_w_momentum_x(hn)
      call CCTK_INFO (msg)
-     write (msg, '("   Landau-Lifshitz momentum y:         ",g16.6)') qlm_ll_momentum_y(hn)
+     write (msg, '("   Weinberg momentum y:         ",g16.6)') qlm_w_momentum_y(hn)
      call CCTK_INFO (msg)
-     write (msg, '("   Landau-Lifshitz momentum z:         ",g16.6)') qlm_ll_momentum_z(hn)
+     write (msg, '("   Weinberg momentum z:         ",g16.6)') qlm_w_momentum_z(hn)
      call CCTK_INFO (msg)
-     write (msg, '("   Landau-Lifshitz angular momentum x: ",g16.6)') qlm_ll_angular_momentum_x(hn)
+     write (msg, '("   Weinberg angular momentum x: ",g16.6)') qlm_w_angular_momentum_x(hn)
      call CCTK_INFO (msg)
-     write (msg, '("   Landau-Lifshitz angular momentum y: ",g16.6)') qlm_ll_angular_momentum_y(hn)
+     write (msg, '("   Weinberg angular momentum y: ",g16.6)') qlm_w_angular_momentum_y(hn)
      call CCTK_INFO (msg)
-     write (msg, '("   Landau-Lifshitz angular momentum z: ",g16.6)') qlm_ll_angular_momentum_z(hn)
+     write (msg, '("   Weinberg angular momentum z: ",g16.6)') qlm_w_angular_momentum_z(hn)
      call CCTK_INFO (msg)
      
   end if
